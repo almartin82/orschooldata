@@ -1,0 +1,41 @@
+url: https://almartin82.github.io/orschooldata/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/almartin82/orschooldata
+
+reference:
+  - title: "Fetch Data"
+    desc: "Functions for downloading enrollment data"
+    contents:
+      - fetch_enr
+      - fetch_enr_multi
+      - get_available_years
+
+  - title: "Transform Data"
+    desc: "Functions for transforming and analyzing data"
+    contents:
+      - tidy_enr
+      - id_enr_aggs
+      - enr_grade_aggs
+
+  - title: "Caching"
+    desc: "Functions for managing cached data"
+    contents:
+      - cache_status
+      - clear_cache
+
+home:
+  links:
+    - text: Oregon Department of Education
+      href: https://www.oregon.gov/ode
+    - text: ODE Student Enrollment Reports
+      href: https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx

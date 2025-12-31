@@ -1,0 +1,24 @@
+# R package build artifacts
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Package build files
+*.tar.gz
+*.Rcheck/
+
+# Documentation artifacts
+docs/
+doc/
+Meta/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+*.Rproj
+
+# Cache directories
+inst/cache/
