@@ -280,15 +280,15 @@ create_district_aggregate <- function(school_df, end_year) {
   }
 
   # Aggregate by district
-  district_agg <- school_df %>%
-    dplyr::filter(!is.na(district_id)) %>%
-    dplyr::group_by(district_id) %>%
+  district_agg <- school_df |>
+    dplyr::filter(!is.na(district_id)) |>
+    dplyr::group_by(district_id) |>
     dplyr::summarize(
       district_name = dplyr::first(district_name[!is.na(district_name)]),
       county = dplyr::first(county[!is.na(county)]),
       dplyr::across(dplyr::all_of(sum_cols), ~sum(.x, na.rm = TRUE)),
       .groups = "drop"
-    ) %>%
+    ) |>
     dplyr::mutate(
       end_year = end_year,
       type = "District",
