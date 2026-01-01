@@ -1,12 +1,10 @@
 Package: orschooldata
-Title: Fetch and Process Oregon School Data
+Title: Oregon School Data
 Version: 0.1.0
 Authors@R:
     person("Al", "Martin", email = "almartin@example.com", role = c("aut", "cre"))
-Description: Downloads and processes school data from the Oregon Department of
-    Education (ODE). Provides functions for fetching enrollment data from the
-    Fall Membership Reports and transforming it into tidy format for analysis.
-    Supports data from 2010 to present.
+Description: A simple, consistent interface for accessing Oregon
+    school data in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
