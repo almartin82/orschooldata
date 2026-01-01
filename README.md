@@ -2,11 +2,12 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/almartin82/orschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/orschooldata/actions/workflows/R-CMD-check.yaml)
+[![Python Tests](https://github.com/almartin82/orschooldata/actions/workflows/python-test.yaml/badge.svg)](https://github.com/almartin82/orschooldata/actions/workflows/python-test.yaml)
 <!-- badges: end -->
 
 **[Documentation](https://almartin82.github.io/orschooldata/)** | [GitHub](https://github.com/almartin82/orschooldata)
 
-An R package for accessing Oregon school enrollment data from the Oregon Department of Education (ODE). **16 years of data** (2010-2025) for every school, district, and the state.
+Fetch and analyze Oregon school enrollment data from [ODE](https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx) in R or Python. **16 years of data** (2010-2025) for every school, district, and the state.
 
 ## What can you find with orschooldata?
 
@@ -255,6 +256,8 @@ devtools::install_github("almartin82/orschooldata")
 
 ## Quick Start
 
+### R
+
 ```r
 library(orschooldata)
 library(dplyr)
@@ -277,6 +280,39 @@ enr |>
 
 # Get multiple years
 enr_multi <- fetch_enr_multi(2020:2025)
+```
+
+### Python
+
+```python
+import pyorschooldata as or_
+
+# Get 2025 enrollment data (2024-25 school year)
+enr = or_.fetch_enr(2025)
+
+# Statewide total
+state_total = enr[
+    (enr['is_state']) &
+    (enr['subgroup'] == 'total_enrollment') &
+    (enr['grade_level'] == 'TOTAL')
+]['n_students'].values[0]
+print(state_total)
+#> 587234
+
+# Top 10 districts
+top_districts = (
+    enr[
+        (enr['is_district']) &
+        (enr['subgroup'] == 'total_enrollment') &
+        (enr['grade_level'] == 'TOTAL')
+    ]
+    .sort_values('n_students', ascending=False)
+    [['district_name', 'n_students']]
+    .head(10)
+)
+
+# Get multiple years
+enr_multi = or_.fetch_enr_multi([2020, 2021, 2022, 2023, 2024, 2025])
 ```
 
 ## Data Availability
