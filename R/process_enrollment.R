@@ -279,16 +279,31 @@ create_district_aggregate <- function(school_df, end_year) {
     return(data.frame())
   }
 
+  # Check if county column exists
+  has_county <- "county" %in% names(school_df)
+
   # Aggregate by district
   district_agg <- school_df |>
     dplyr::filter(!is.na(district_id)) |>
     dplyr::group_by(district_id) |>
     dplyr::summarize(
       district_name = dplyr::first(district_name[!is.na(district_name)]),
-      county = dplyr::first(county[!is.na(county)]),
       dplyr::across(dplyr::all_of(sum_cols), ~sum(.x, na.rm = TRUE)),
       .groups = "drop"
-    ) |>
+    )
+
+  # Add county if it exists
+  if (has_county) {
+    county_lookup <- school_df |>
+      dplyr::filter(!is.na(district_id), !is.na(county)) |>
+      dplyr::group_by(district_id) |>
+      dplyr::summarize(county = dplyr::first(county), .groups = "drop")
+    district_agg <- dplyr::left_join(district_agg, county_lookup, by = "district_id")
+  } else {
+    district_agg$county <- NA_character_
+  }
+
+  district_agg <- district_agg |>
     dplyr::mutate(
       end_year = end_year,
       type = "District",
