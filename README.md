@@ -238,6 +238,14 @@ Multnomah County (Portland) has more students than the bottom 20 counties combin
 
 ---
 
+## Enrollment Visualizations
+
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png" alt="Oregon statewide enrollment trends" width="600">
+
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png" alt="Top Oregon districts" width="600">
+
+See the [full vignette](https://almartin82.github.io/orschooldata/articles/enrollment_hooks.html) for more insights.
+
 ## Installation
 
 ```r
