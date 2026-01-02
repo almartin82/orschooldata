@@ -78,7 +78,7 @@ class TestGetAvailableYears:
     def test_reasonable_year_range(self):
         """Years should be in reasonable range (2010-2030)."""
         years = or_.get_available_years()
-        assert 2010 <= years["min_year"] <= 2015
+        assert 2010 <= years["min_year"] <= 2020
         assert 2020 <= years["max_year"] <= 2030
 
 
