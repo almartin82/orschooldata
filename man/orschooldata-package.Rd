@@ -61,6 +61,7 @@ Oregon enrollment data has two distinct format eras:
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://almartin82.github.io/orschooldata}
   \item \url{https://github.com/almartin82/orschooldata}
   \item Report bugs at \url{https://github.com/almartin82/orschooldata/issues}
 }

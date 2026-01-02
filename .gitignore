@@ -10,8 +10,6 @@
 
 # Documentation artifacts
 docs/
-doc/
-Meta/
 
 # OS files
 .DS_Store
