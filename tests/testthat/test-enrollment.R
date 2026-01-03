@@ -23,9 +23,8 @@ test_that("get_available_years returns expected range", {
   expect_true(is.integer(years) || is.numeric(years))
   expect_true(2010 %in% years)
   expect_true(2024 %in% years)
-  expect_true(2025 %in% years)
   expect_false(2009 %in% years)
-  expect_false(2026 %in% years)
+  expect_false(2025 %in% years)
 })
 
 test_that("build_enrollment_url constructs valid URLs", {

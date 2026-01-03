@@ -38,7 +38,7 @@ get_available_years <- function() {
   # Oregon ODE provides Fall Membership Reports from 2009-10 through present
 
   # But 2009-10 is an amended file with inconsistent format, so we start at 2010
-  2010:2025
+  2010:2024
 }
 
 
