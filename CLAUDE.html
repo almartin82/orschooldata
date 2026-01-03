@@ -16,6 +16,11 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/enrollment_hooks.html">10 Insights from Oregon School Enrollment Data</a></li>
+    <li><a class="dropdown-item" href="articles/getting_started.html">Getting Started with orschooldata</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/almartin82/orschooldata"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -31,6 +36,11 @@
       <small class="dont-index">Source: <a href="https://github.com/almartin82/orschooldata/blob/main/CLAUDE.md" class="external-link"><code>CLAUDE.md</code></a></small>
     </div>
 
+
+<div class="section level2">
+<h2 id="critical-data-source-rules">CRITICAL DATA SOURCE RULES<a class="anchor" aria-label="anchor" href="#critical-data-source-rules"></a></h2>
+<p><strong>NEVER use Urban Institute API, NCES CCD, or ANY federal data source</strong> — the entire point of these packages is to provide STATE-LEVEL data directly from state DOEs. Federal sources aggregate/transform data differently and lose state-specific details. If a state DOE source is broken, FIX IT or find an alternative STATE source — do not fall back to federal data.</p>
+<hr></div>
 <div id="claude-code-instructions" class="section level1">
 
 <div class="section level2">
@@ -39,10 +49,172 @@
 <li>NEVER reference Claude, Claude Code, or AI assistance in PR descriptions</li>
 <li>NEVER add Co-Authored-By lines mentioning Claude or Anthropic</li>
 <li>Keep commit messages focused on what changed, not how it was written</li>
+</ul><hr></div>
+<div class="section level2">
+<h2 id="local-testing-before-prs-required">Local Testing Before PRs (REQUIRED)<a class="anchor" aria-label="anchor" href="#local-testing-before-prs-required"></a></h2>
+<p><strong>PRs will not be merged until CI passes.</strong> Run these checks locally BEFORE opening a PR:</p>
+<div class="section level3">
+<h3 id="ci-checks-that-must-pass">CI Checks That Must Pass<a class="anchor" aria-label="anchor" href="#ci-checks-that-must-pass"></a></h3>
+<table class="table"><colgroup><col width="18%"><col width="40%"><col width="40%"></colgroup><thead><tr class="header"><th>Check</th>
+<th>Local Command</th>
+<th>What It Tests</th>
+</tr></thead><tbody><tr class="odd"><td>R-CMD-check</td>
+<td><code>devtools::check()</code></td>
+<td>Package builds, tests pass, no errors/warnings</td>
+</tr><tr class="even"><td>Python tests</td>
+<td><code>pytest tests/test_pyorschooldata.py -v</code></td>
+<td>Python wrapper works correctly</td>
+</tr><tr class="odd"><td>pkgdown</td>
+<td><code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code></td>
+<td>Documentation and vignettes render</td>
+</tr></tbody></table></div>
+<div class="section level3">
+<h3 id="quick-commands">Quick Commands<a class="anchor" aria-label="anchor" href="#quick-commands"></a></h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># R package check (required)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Python tests (required)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"pip install -e ./pyorschooldata &amp;&amp; pytest tests/test_pyorschooldata.py -v"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># pkgdown build (required)</span></span>
+<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="pre-pr-checklist">Pre-PR Checklist<a class="anchor" aria-label="anchor" href="#pre-pr-checklist"></a></h3>
+<p>Before opening a PR, verify: - [ ] <code>devtools::check()</code> — 0 errors, 0 warnings - [ ] <code>pytest tests/test_pyorschooldata.py</code> — all tests pass - [ ] <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> — builds without errors - [ ] Vignettes render (no <code>eval=FALSE</code> hacks)</p>
+<hr></div>
+</div>
+<div class="section level2">
+<h2 id="package-overview">Package Overview<a class="anchor" aria-label="anchor" href="#package-overview"></a></h2>
+<p>orschooldata provides access to Oregon Department of Education Fall Membership Reports.</p>
+</div>
+<div class="section level2">
+<h2 id="available-years">Available Years<a class="anchor" aria-label="anchor" href="#available-years"></a></h2>
+<p>Data is available for school years 2009-10 through 2023-24: - <strong>2010-2014</strong> (Era 1): .xls format files - <strong>2015-2024</strong> (Era 2): .xlsx format files</p>
+<p>All years use year-prefixed column names (e.g., <code>202324_kindergarten</code>, <code>20232024_total_enrollment</code>).</p>
+</div>
+<div class="section level2">
+<h2 id="data-sources">Data Sources<a class="anchor" aria-label="anchor" href="#data-sources"></a></h2>
+<p>Oregon ODE Fall Membership Reports: - URL pattern: <code>https://www.oregon.gov/ode/reports-and-data/students/Documents/fallmembershipreport_YYYYYYYY.xlsx</code> - Example: <code>fallmembershipreport_20232024.xlsx</code> for 2023-24</p>
+</div>
+<div class="section level2">
+<h2 id="column-name-variations-by-year">Column Name Variations by Year<a class="anchor" aria-label="anchor" href="#column-name-variations-by-year"></a></h2>
+<p>The ODE data has inconsistent column naming across years:</p>
+<div class="section level3">
+<h3 id="district-id-columns">District ID columns:<a class="anchor" aria-label="anchor" href="#district-id-columns"></a></h3>
+<ul><li>2010: <code>attnd_distinstid</code>
+</li>
+<li>2011: <code>attending_district_instid</code>
+</li>
+<li>2012-2018, 2020+: <code>attending_district_institution_id</code>
+</li>
+<li>2019: <code>attending_district_institutional_id</code> (typo in ODE data)</li>
+<li>2022-2024: <code>district_institution_id</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="school-id-columns">School ID columns:<a class="anchor" aria-label="anchor" href="#school-id-columns"></a></h3>
+<ul><li>2010: <code>attnd_schlinstid</code>
+</li>
+<li>2011: <code>attending_school_instid</code>
+</li>
+<li>2012-2018: <code>attending_school_institution_id</code>
+</li>
+<li>2019: <code>attending_school_institutional_id</code> (typo in ODE data)</li>
+<li>2020: <code>attending_school_id</code>
+</li>
+<li>2022-2024: <code>school_institution_id</code>
+</li>
 </ul></div>
 </div>
+<div class="section level2">
+<h2 id="test-coverage">Test Coverage<a class="anchor" aria-label="anchor" href="#test-coverage"></a></h2>
+<p>Tests verify:</p>
+<div class="section level3">
+<h3 id="year-coverage-all-15-years-2010-2024">Year Coverage (all 15 years: 2010-2024)<a class="anchor" aria-label="anchor" href="#year-coverage-all-15-years-2010-2024"></a></h3>
+<ul><li>Valid state totals (400k-800k students)</li>
+<li>Correct number of districts (~200-250) and campuses (~1400-1700)</li>
+<li>Complete grade columns (K-12)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="data-fidelity">Data Fidelity<a class="anchor" aria-label="anchor" href="#data-fidelity"></a></h3>
+<ul><li>
+<strong>CRITICAL</strong>: tidy=TRUE output MUST maintain fidelity to raw, unprocessed file</li>
+<li>Processed enrollment counts match raw data exactly</li>
+<li>Grade sums match row totals (within 5% for ungraded students)</li>
+<li>District totals match sum of campus totals</li>
+<li>State totals match sum of district totals</li>
+</ul></div>
+<div class="section level3">
+<h3 id="data-quality">Data Quality<a class="anchor" aria-label="anchor" href="#data-quality"></a></h3>
+<ul><li>No impossible zeros in state totals</li>
+<li>No Inf or NaN values in tidy output</li>
+<li>All enrollment counts are non-negative</li>
+<li>All percentages are between 0 and 1</li>
+</ul></div>
+</div>
+<div class="section level2">
+<h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a></h2>
+<ul><li>
+<code>fetch_enr(end_year, tidy=TRUE)</code> - Main function for single year</li>
+<li>
+<code>fetch_enr_multi(end_years, tidy=TRUE)</code> - Multiple years combined</li>
+<li>
+<code>get_raw_enr(end_year)</code> - Raw data before processing (internal)</li>
+<li>
+<code><a href="reference/get_available_years.html">get_available_years()</a></code> - Returns 2010:2024</li>
+</ul></div>
+<div class="section level2">
+<h2 id="processing-pipeline">Processing Pipeline<a class="anchor" aria-label="anchor" href="#processing-pipeline"></a></h2>
+<ol style="list-style-type: decimal"><li>
+<code><a href="reference/get_raw_enr.html">get_raw_enr()</a></code> - Downloads Excel file from ODE</li>
+<li>
+<code><a href="reference/read_ode_excel.html">read_ode_excel()</a></code> - Reads appropriate sheet, handles era differences</li>
+<li>
+<code><a href="reference/process_enr.html">process_enr()</a></code> - Normalizes column names, extracts enrollment data</li>
+<li>
+<code><a href="reference/create_district_aggregate.html">create_district_aggregate()</a></code> - Sums campus data to district level</li>
+<li>
+<code><a href="reference/create_state_aggregate.html">create_state_aggregate()</a></code> - Sums district data to state level</li>
+<li>
+<code><a href="reference/tidy_enr.html">tidy_enr()</a></code> - Pivots to long format (optional)</li>
+<li>
+<code><a href="reference/id_enr_aggs.html">id_enr_aggs()</a></code> - Adds is_state, is_district, is_campus flags</li>
+</ol></div>
+<div class="section level2">
+<h2 id="common-issues-and-fixes">Common Issues and Fixes<a class="anchor" aria-label="anchor" href="#common-issues-and-fixes"></a></h2>
+<div class="section level3">
+<h3 id="minimal-output-for-a-year">“Minimal output” for a year<a class="anchor" aria-label="anchor" href="#minimal-output-for-a-year"></a></h3>
+<p>Usually caused by column name pattern not matching. Check: 1. Raw data column names: <code>names(get_raw_enr(year))</code> 2. Year prefix format (e.g., “2324” vs “202324”) 3. Column spelling variations (e.g., “institutional” vs “institution”)</p>
+<hr></div>
+</div>
+<div class="section level2">
+<h2 id="live-pipeline-testing">LIVE Pipeline Testing<a class="anchor" aria-label="anchor" href="#live-pipeline-testing"></a></h2>
+<p>This package includes <code>tests/testthat/test-pipeline-live.R</code> with LIVE network tests.</p>
+<div class="section level3">
+<h3 id="test-categories">Test Categories:<a class="anchor" aria-label="anchor" href="#test-categories"></a></h3>
+<ol style="list-style-type: decimal"><li>URL Availability - HTTP 200 checks</li>
+<li>File Download - Verify actual file (not HTML error)</li>
+<li>File Parsing - readxl/readr succeeds</li>
+<li>Column Structure - Expected columns exist</li>
+<li>get_raw_enr() - Raw data function works</li>
+<li>Data Quality - No Inf/NaN, non-negative counts</li>
+<li>Aggregation - State total &gt; 0</li>
+<li>Output Fidelity - tidy=TRUE matches raw</li>
+</ol></div>
+<div class="section level3">
+<h3 id="running-tests">Running Tests:<a class="anchor" aria-label="anchor" href="#running-tests"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"pipeline-live"</span><span class="op">)</span></span></code></pre></div>
+<p>See <code>state-schooldata/CLAUDE.md</code> for complete testing framework documentation.</p>
+</div>
+</div>
+</div>
 
-  </main></div>
+
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -18,6 +18,11 @@ Education Fall Membership Reports."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/enrollment_hooks.html">10 Insights from Oregon School Enrollment Data</a></li>
+    <li><a class="dropdown-item" href="../articles/getting_started.html">Getting Started with orschooldata</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/almartin82/orschooldata"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -50,7 +55,7 @@ Education Fall Membership Reports.</p>
 
 <dl><dt id="arg-end-year">end_year<a class="anchor" aria-label="anchor" href="#arg-end-year"></a></dt>
 <dd><p>A school year. Year is the end of the academic year - eg 2023-24
-school year is year '2024'. Valid values are 2010-2025.</p></dd>
+school year is year '2024'. Valid values are 2010-2024.</p></dd>
 
 
 <dt id="arg-tidy">tidy<a class="anchor" aria-label="anchor" href="#arg-tidy"></a></dt>
@@ -83,7 +88,7 @@ Tidy format pivots these counts into subgroup and grade_level columns.</p>
 <span class="r-in"><span><span class="va">enr_fresh</span> <span class="op">&lt;-</span> <span class="fu">fetch_enr</span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Filter to specific district</span></span></span>
-<span class="r-in"><span><span class="va">portland_ps</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">portland_ps</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">district_id</span> <span class="op">==</span> <span class="st">"1920"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
