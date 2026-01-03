@@ -42,6 +42,12 @@
 #'   \item{Era 2: 2015-present}{.xlsx format with standardized columns}
 #' }
 #'
+utils::globalVariables(c(
+  "county", "district_id", "district_name",
+  "grade_level", "n_students", "row_total",
+  "subgroup", "type"
+))
+
 #' @docType package
 #' @name orschooldata-package
 #' @aliases orschooldata
