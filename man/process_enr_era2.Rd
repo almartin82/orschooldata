@@ -15,6 +15,20 @@ process_enr_era2(df, end_year)
 Processed data frame
 }
 \description{
-Process Era 2 data (2015-present)
+Oregon ODE Fall Membership Reports use year-prefixed column names.
+For example, 2023-24 data uses columns like:
+\itemize{
+\item 20232024_total_enrollment (for the current year total)
+\item 202324_kindergarten, 202324_grade_one, etc. (for grade breakdowns)
+}
+}
+\details{
+The column naming conventions vary slightly between years:
+\itemize{
+\item District ID: district_institution_id, attending_district_institution_id
+\item School ID: school_institution_id, attending_school_institution_id, attending_school_id
+\item District name: district_name, district
+\item School name: school_name, school
+}
 }
 \keyword{internal}
