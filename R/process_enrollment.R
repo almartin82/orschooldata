@@ -45,6 +45,11 @@ process_enr <- function(raw_data, end_year) {
 
 #' Process Era 1 data (2010-2014)
 #'
+#' Era 1 files (.xls format) use the same year-prefixed column naming as Era 2,
+#' but with some differences in ID column naming conventions:
+#' - attnd_distinstid, attnd_schlinstid (2010)
+#' - attending_district_institution_id (2011+)
+#'
 #' @param df Raw data frame
 #' @param end_year School year end
 #' @return Processed data frame
@@ -53,6 +58,11 @@ process_enr_era1 <- function(df, end_year) {
 
   cols <- names(df)
   n_rows <- nrow(df)
+
+  # Build year prefix patterns for this year
+  # Oregon uses YYYY format for the short prefix (e.g., "0910" for 2009-10)
+  start_year <- end_year - 1
+  year_prefix_short <- paste0(substr(start_year, 3, 4), substr(end_year, 3, 4))
 
   # Helper to find column by pattern
   find_col <- function(patterns) {
@@ -70,76 +80,136 @@ process_enr_era1 <- function(df, end_year) {
     stringsAsFactors = FALSE
   )
 
-  # District ID - Oregon uses various column names
-  dist_id_col <- find_col(c("^district_id$", "^dist_id$", "^districtid$", "distid"))
+  # District ID - Oregon uses various column names across years
+  # attnd_distinstid (2010), attending_district_instid (2011), attending_district_institution_id (2012+)
+  dist_id_col <- find_col(c(
+    "^attnd_distinstid$",
+    "^attending_district_instid$",
+    "^attending_district_institution_id$",
+    "^district_institution_id$",
+    "^district_id$",
+    "^dist_id$",
+    "distinstid"
+  ))
   if (!is.null(dist_id_col)) {
     result$district_id <- trimws(as.character(df[[dist_id_col]]))
-  } else {
-    # Try to extract from institution ID or name
-    inst_col <- find_col(c("institution_id", "inst_id", "instid"))
-    if (!is.null(inst_col)) {
-      # District ID is often first 4 characters
-      result$district_id <- substr(trimws(as.character(df[[inst_col]])), 1, 4)
-    }
   }
 
   # District name
-  dist_name_col <- find_col(c("district_name", "distname", "district$"))
+  dist_name_col <- find_col(c(
+    "^district_name$",
+    "^district$",
+    "^distname$"
+  ))
   if (!is.null(dist_name_col)) {
     result$district_name <- trimws(as.character(df[[dist_name_col]]))
   }
 
-  # School/Campus ID
-  school_id_col <- find_col(c("school_id", "schoolid", "institution_id", "instid", "inst_id"))
+  # School/Campus ID - attnd_schlinstid (2010), attending_school_instid (2011), attending_school_institution_id (2012+)
+  school_id_col <- find_col(c(
+    "^attnd_schlinstid$",
+    "^attending_school_instid$",
+    "^attending_school_institution_id$",
+    "^school_institution_id$",
+    "^school_id$",
+    "^schoolid$",
+    "schlinstid"
+  ))
   if (!is.null(school_id_col)) {
     result$campus_id <- trimws(as.character(df[[school_id_col]]))
   }
 
   # School/Campus name
-  school_name_col <- find_col(c("school_name", "schoolname", "school$", "institution_name", "instname"))
+  school_name_col <- find_col(c(
+    "^school_name$",
+    "^school$",
+    "^schoolname$"
+  ))
   if (!is.null(school_name_col)) {
     result$campus_name <- trimws(as.character(df[[school_name_col]]))
   }
 
   # County
-  county_col <- find_col(c("county", "countyname", "county_name"))
+  county_col <- find_col(c("^county$", "^countyname$", "^county_name$"))
   if (!is.null(county_col)) {
     result$county <- trimws(as.character(df[[county_col]]))
   }
 
-  # Total enrollment
-  total_col <- find_col(c("^total$", "total_enrollment", "enrollment", "total_students"))
+  # Total enrollment - year-prefixed (e.g., 200910_total_enrollment)
+  total_patterns <- c(
+    paste0("^", year_prefix_short, "_total_enrollment$"),
+    "total_enrollment$",
+    "^total$",
+    "^enrollment$"
+  )
+  total_col <- find_col(total_patterns)
   if (!is.null(total_col)) {
     result$row_total <- safe_numeric(df[[total_col]])
   }
 
-  # Grade levels - Oregon typically uses grade_k through grade_12 or similar
-  grade_patterns <- list(
-    grade_pk = c("pre_k", "prek", "^pk$", "pre-k"),
-    grade_k = c("^k$", "^kinder", "grade_k$", "kindergarten"),
-    grade_01 = c("^1$", "^grade_1$", "^gr_1$", "^01$"),
-    grade_02 = c("^2$", "^grade_2$", "^gr_2$", "^02$"),
-    grade_03 = c("^3$", "^grade_3$", "^gr_3$", "^03$"),
-    grade_04 = c("^4$", "^grade_4$", "^gr_4$", "^04$"),
-    grade_05 = c("^5$", "^grade_5$", "^gr_5$", "^05$"),
-    grade_06 = c("^6$", "^grade_6$", "^gr_6$", "^06$"),
-    grade_07 = c("^7$", "^grade_7$", "^gr_7$", "^07$"),
-    grade_08 = c("^8$", "^grade_8$", "^gr_8$", "^08$"),
-    grade_09 = c("^9$", "^grade_9$", "^gr_9$", "^09$"),
-    grade_10 = c("^10$", "^grade_10$", "^gr_10$"),
-    grade_11 = c("^11$", "^grade_11$", "^gr_11$"),
-    grade_12 = c("^12$", "^grade_12$", "^gr_12$")
-  )
+  # Grade levels - Oregon uses year-prefixed columns
+  # Format: YYYY_kindergarten, YYYY_grade_one, YYYY_grade_two, etc.
 
-  for (grade_name in names(grade_patterns)) {
-    col <- find_col(grade_patterns[[grade_name]])
+  # Kindergarten patterns
+  k_patterns <- c(
+    paste0("^", year_prefix_short, "_kindergarten$"),
+    "kindergarten$",
+    "^k$",
+    "^grade_k$"
+  )
+  k_col <- find_col(k_patterns)
+  if (!is.null(k_col)) {
+    result$grade_k <- safe_numeric(df[[k_col]])
+  }
+
+  # Grades 1-12 use spelled-out names: grade_one, grade_two, etc.
+  grade_words <- c(
+    "one", "two", "three", "four", "five", "six",
+    "seven", "eight", "nine", "ten", "eleven", "twelve"
+  )
+  grade_nums <- sprintf("%02d", 1:12)
+
+  for (i in 1:12) {
+    grade_name <- paste0("grade_", grade_nums[i])
+    word <- grade_words[i]
+
+    # Build patterns for this grade
+    patterns <- c(
+      paste0("^", year_prefix_short, "_grade_", word, "$"),
+      paste0("grade_", word, "$"),
+      paste0("^grade_", i, "$"),
+      paste0("^gr_", i, "$")
+    )
+
+    col <- find_col(patterns)
     if (!is.null(col)) {
       result[[grade_name]] <- safe_numeric(df[[col]])
     }
   }
 
+  # Pre-K (not always present)
+  pk_patterns <- c(
+    paste0("^", year_prefix_short, "_pre_k$"),
+    paste0("^", year_prefix_short, "_prek$"),
+    "^pre_k$", "^prek$", "^pk$"
+  )
+  pk_col <- find_col(pk_patterns)
+  if (!is.null(pk_col)) {
+    result$grade_pk <- safe_numeric(df[[pk_col]])
+  }
+
+  # Ungraded students
+  ug_patterns <- c(
+    paste0("^", year_prefix_short, "_ug$"),
+    paste0("^", year_prefix_short, "_ungraded$"),
+    "^ug$", "ungraded$"
+  )
+  ug_col <- find_col(ug_patterns)
+  if (!is.null(ug_col)) {
+    result$grade_ug <- safe_numeric(df[[ug_col]])
+  }
+
   # Filter out any rows that don't look like school data
-  # (e.g., header rows, totals, footnotes)
   result <- result[!is.na(result$district_id) | !is.na(result$campus_id), ]
 
   result
@@ -147,6 +217,17 @@ process_enr_era1 <- function(df, end_year) {
 
 
 #' Process Era 2 data (2015-present)
+#'
+#' Oregon ODE Fall Membership Reports use year-prefixed column names.
+#' For example, 2023-24 data uses columns like:
+#' - 20232024_total_enrollment (for the current year total)
+#' - 202324_kindergarten, 202324_grade_one, etc. (for grade breakdowns)
+#'
+#' The column naming conventions vary slightly between years:
+#' - District ID: district_institution_id, attending_district_institution_id
+#' - School ID: school_institution_id, attending_school_institution_id, attending_school_id
+#' - District name: district_name, district
+#' - School name: school_name, school
 #'
 #' @param df Raw data frame
 #' @param end_year School year end
@@ -157,6 +238,12 @@ process_enr_era2 <- function(df, end_year) {
   cols <- names(df)
   n_rows <- nrow(df)
 
+  # Build year prefix patterns for this year
+  # Oregon uses two formats: YYYYYYYY (e.g., 20232024) and YYYY (e.g., 202324)
+  start_year <- end_year - 1
+  year_prefix_long <- paste0(start_year, end_year)  # e.g., "20232024"
+  year_prefix_short <- paste0(substr(start_year, 3, 4), substr(end_year, 3, 4))  # e.g., "2324"
+
   # Helper to find column by pattern
   find_col <- function(patterns) {
     for (pattern in patterns) {
@@ -173,70 +260,145 @@ process_enr_era2 <- function(df, end_year) {
     stringsAsFactors = FALSE
   )
 
-  # District ID
-  dist_id_col <- find_col(c("^district_id$", "^dist_id$", "^districtinstid$", "attending_district_institution_id"))
+  # District ID - Oregon uses various column names across years
+  # Note: 2019 uses "institutional" instead of "institution" (typo in ODE data)
+  dist_id_col <- find_col(c(
+    "^district_institution_id$",
+    "^attending_district_institution_id$",
+    "^attending_district_institutional_id$",
+    "^district_id$",
+    "^dist_id$",
+    "^districtinstid$"
+  ))
   if (!is.null(dist_id_col)) {
     result$district_id <- trimws(as.character(df[[dist_id_col]]))
   }
 
-  # District name
-  dist_name_col <- find_col(c("district_name", "distname", "district$", "attending_district_name"))
+  # District name - various patterns
+  dist_name_col <- find_col(c(
+    "^district_name$",
+    "^district$",
+    "^distname$",
+    "^attending_district_name$"
+  ))
   if (!is.null(dist_name_col)) {
     result$district_name <- trimws(as.character(df[[dist_name_col]]))
   }
 
-  # School ID
-  school_id_col <- find_col(c("^school_inst_id$", "school_institution_id", "attending_school_institution_id",
-                              "schoolinstid", "school_id", "schoolid", "institution_id"))
+  # School ID - various patterns
+  # Note: 2019 uses "institutional" instead of "institution" (typo in ODE data)
+  school_id_col <- find_col(c(
+    "^school_institution_id$",
+    "^attending_school_institution_id$",
+    "^attending_school_institutional_id$",
+    "^attending_school_id$",
+    "^school_inst_id$",
+    "^schoolinstid$",
+    "^school_id$",
+    "^schoolid$",
+    "^institution_id$"
+  ))
   if (!is.null(school_id_col)) {
     result$campus_id <- trimws(as.character(df[[school_id_col]]))
   }
 
-  # School name
-  school_name_col <- find_col(c("school_name", "schoolname", "attending_school_name", "school$", "institution_name"))
+  # School name - various patterns
+  school_name_col <- find_col(c(
+    "^school_name$",
+    "^school$",
+    "^schoolname$",
+    "^attending_school_name$",
+    "^institution_name$"
+  ))
   if (!is.null(school_name_col)) {
     result$campus_name <- trimws(as.character(df[[school_name_col]]))
   }
 
   # County
-  county_col <- find_col(c("county", "countyname", "county_name"))
+  county_col <- find_col(c("^county$", "^countyname$", "^county_name$"))
   if (!is.null(county_col)) {
     result$county <- trimws(as.character(df[[county_col]]))
   }
 
-  # Total enrollment
-  total_col <- find_col(c("^total$", "total_enrollment", "^enrollment$", "total_students", "^all_students$"))
+  # Total enrollment - look for year-prefixed columns first, then generic
+  # Format: YYYYYYYY_total_enrollment (e.g., 20232024_total_enrollment)
+  total_patterns <- c(
+    paste0("^", year_prefix_long, "_total_enrollment$"),
+    paste0("^", year_prefix_short, "_total_enrollment$"),
+    "total_enrollment$",
+    "^total$",
+    "^enrollment$",
+    "^total_students$",
+    "^all_students$"
+  )
+  total_col <- find_col(total_patterns)
   if (!is.null(total_col)) {
     result$row_total <- safe_numeric(df[[total_col]])
   }
 
-  # Grade levels
-  grade_patterns <- list(
-    grade_pk = c("^pre_k$", "^prek$", "^pk$", "^pre-k$", "prekindergarten"),
-    grade_k = c("^k$", "^kindergarten$", "^grade_k$"),
-    grade_01 = c("^grade_1$", "^gr_1$", "^1st$", "^01$", "^_1$"),
-    grade_02 = c("^grade_2$", "^gr_2$", "^2nd$", "^02$", "^_2$"),
-    grade_03 = c("^grade_3$", "^gr_3$", "^3rd$", "^03$", "^_3$"),
-    grade_04 = c("^grade_4$", "^gr_4$", "^4th$", "^04$", "^_4$"),
-    grade_05 = c("^grade_5$", "^gr_5$", "^5th$", "^05$", "^_5$"),
-    grade_06 = c("^grade_6$", "^gr_6$", "^6th$", "^06$", "^_6$"),
-    grade_07 = c("^grade_7$", "^gr_7$", "^7th$", "^07$", "^_7$"),
-    grade_08 = c("^grade_8$", "^gr_8$", "^8th$", "^08$", "^_8$"),
-    grade_09 = c("^grade_9$", "^gr_9$", "^9th$", "^09$", "^_9$"),
-    grade_10 = c("^grade_10$", "^gr_10$", "^10th$", "^_10$"),
-    grade_11 = c("^grade_11$", "^gr_11$", "^11th$", "^_11$"),
-    grade_12 = c("^grade_12$", "^gr_12$", "^12th$", "^_12$")
-  )
+  # Grade levels - Oregon uses year-prefixed columns
+  # Format: YYYY_kindergarten, YYYY_grade_one, YYYY_grade_two, etc.
+  # The short year prefix (e.g., 2324) is used for grade columns
 
-  for (grade_name in names(grade_patterns)) {
-    col <- find_col(grade_patterns[[grade_name]])
+  # Kindergarten patterns
+  k_patterns <- c(
+    paste0("^", year_prefix_short, "_kindergarten$"),
+    paste0("^", year_prefix_long, "_kindergarten$"),
+    "kindergarten$",
+    "^k$",
+    "^grade_k$"
+  )
+  k_col <- find_col(k_patterns)
+  if (!is.null(k_col)) {
+    result$grade_k <- safe_numeric(df[[k_col]])
+  }
+
+  # Grades 1-12 use spelled-out names: grade_one, grade_two, etc.
+  grade_words <- c(
+    "one", "two", "three", "four", "five", "six",
+    "seven", "eight", "nine", "ten", "eleven", "twelve"
+  )
+  grade_nums <- sprintf("%02d", 1:12)
+
+  for (i in 1:12) {
+    grade_name <- paste0("grade_", grade_nums[i])
+    word <- grade_words[i]
+
+    # Build patterns for this grade
+    patterns <- c(
+      paste0("^", year_prefix_short, "_grade_", word, "$"),
+      paste0("^", year_prefix_long, "_grade_", word, "$"),
+      paste0("grade_", word, "$"),
+      paste0("^grade_", i, "$"),
+      paste0("^gr_", i, "$"),
+      paste0("^", grade_nums[i], "$")
+    )
+
+    col <- find_col(patterns)
     if (!is.null(col)) {
       result[[grade_name]] <- safe_numeric(df[[col]])
     }
   }
 
+  # Pre-K (not always present)
+  pk_patterns <- c(
+    paste0("^", year_prefix_short, "_pre_k$"),
+    paste0("^", year_prefix_short, "_prek$"),
+    paste0("^", year_prefix_short, "_prekindergarten$"),
+    "^pre_k$", "^prek$", "^pk$", "^pre-k$", "prekindergarten$"
+  )
+  pk_col <- find_col(pk_patterns)
+  if (!is.null(pk_col)) {
+    result$grade_pk <- safe_numeric(df[[pk_col]])
+  }
+
   # Ungraded students
-  ug_col <- find_col(c("^ug$", "ungraded", "^ungraded$"))
+  ug_patterns <- c(
+    paste0("^", year_prefix_short, "_ug$"),
+    paste0("^", year_prefix_short, "_ungraded$"),
+    "^ug$", "ungraded$", "^ungraded$"
+  )
+  ug_col <- find_col(ug_patterns)
   if (!is.null(ug_col)) {
     result$grade_ug <- safe_numeric(df[[ug_col]])
   }
