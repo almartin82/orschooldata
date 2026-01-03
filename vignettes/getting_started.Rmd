@@ -1,0 +1,202 @@
+---
+title: "Getting Started with orschooldata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with orschooldata}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+The orschooldata package provides easy access to Oregon Department of Education Fall Membership Reports, covering school years 2009-10 through 2023-24.
+
+## Installation
+
+```{r eval=FALSE}
+# Install from GitHub
+remotes::install_github("your-username/orschooldata")
+```
+
+## Quick Start
+
+```{r load-package}
+library(orschooldata)
+library(dplyr)
+```
+
+### Check available years
+
+```{r available-years}
+get_available_years()
+```
+
+### Fetch single year
+
+```{r fetch-single}
+# Get 2024 enrollment data (2023-24 school year)
+enr_2024 <- fetch_enr(2024)
+
+# View structure
+glimpse(enr_2024)
+```
+
+### Understanding the output
+
+The tidy output contains:
+
+- **end_year**: School year end (2024 = 2023-24)
+- **type**: "State", "District", or "Campus"
+- **district_id/campus_id**: Oregon ODE institution IDs
+- **grade_level**: "TOTAL", "K", "01"-"12"
+- **subgroup**: Currently only "total_enrollment"
+- **n_students**: Enrollment count
+- **pct**: Proportion of total
+- **is_state/is_district/is_campus**: Boolean flags
+
+### Filter by type
+
+```{r filter-type}
+# State-level totals
+state_total <- enr_2024 |>
+  filter(is_state, grade_level == "TOTAL")
+
+state_total$n_students
+```
+
+```{r filter-district}
+# District-level data
+districts <- enr_2024 |>
+  filter(is_district, grade_level == "TOTAL") |>
+  arrange(desc(n_students)) |>
+  select(district_name, n_students) |>
+  head(10)
+
+districts
+```
+
+### Wide format
+
+For analysis that needs grade columns side-by-side, use `tidy = FALSE`:
+
+```{r wide-format}
+enr_wide <- fetch_enr(2024, tidy = FALSE)
+names(enr_wide)
+```
+
+## Multi-year Analysis
+
+### Fetch multiple years
+
+```{r fetch-multi}
+# Get 5 years of data
+enr_multi <- fetch_enr_multi(2020:2024)
+
+# State totals over time
+state_trend <- enr_multi |>
+  filter(is_state, grade_level == "TOTAL") |>
+  select(end_year, n_students)
+
+state_trend
+```
+
+### Calculate year-over-year changes
+
+```{r yoy-change}
+state_trend |>
+  mutate(
+    change = n_students - lag(n_students),
+    pct_change = round(change / lag(n_students) * 100, 2)
+  )
+```
+
+## Grade Aggregations
+
+Create K-8, high school (9-12), and K-12 aggregates:
+
+```{r grade-aggs}
+grade_aggs <- enr_grade_aggs(enr_2024)
+
+# View state-level aggregates
+grade_aggs |>
+  filter(is_state) |>
+  select(grade_level, n_students)
+```
+
+## Caching
+
+The package automatically caches downloaded data to speed up repeated requests:
+
+```{r caching}
+# First call downloads and caches
+enr1 <- fetch_enr(2024)
+
+# Second call uses cache (much faster)
+enr2 <- fetch_enr(2024)
+
+# Force fresh download
+enr3 <- fetch_enr(2024, use_cache = FALSE)
+```
+
+### Manage cache
+
+```{r cache-management, eval=FALSE}
+# List cached files
+list_cache()
+
+# Clear all cache
+clear_cache()
+```
+
+## Common Patterns
+
+### Find largest schools in a district
+
+```{r largest-schools}
+# Find schools in Portland (district_id = 1920)
+portland_schools <- enr_2024 |>
+  filter(is_campus, district_id == "1920", grade_level == "TOTAL") |>
+  arrange(desc(n_students)) |>
+  select(campus_name, n_students) |>
+  head(10)
+
+portland_schools
+```
+
+### Compare grade distributions
+
+```{r grade-distribution}
+# Elementary vs high school at state level
+enr_2024 |>
+  filter(is_state, grade_level %in% c("K", "01", "05", "09", "12")) |>
+  select(grade_level, n_students)
+```
+
+### Track a district over time
+
+```{r district-trend}
+# Salem-Keizer (district_id = 2178) over 5 years
+fetch_enr_multi(2020:2024) |>
+  filter(is_district, district_id == "2178", grade_level == "TOTAL") |>
+  select(end_year, district_name, n_students)
+```
+
+## Data Quality Notes
+
+- Some schools report suppressed values (shown as `*` or `<5`) which become NA
+- "Ungraded" (UG) students are tracked separately when present
+- District totals are calculated by summing campus data
+- State totals are calculated by summing district data
+
+## Next Steps
+
+- See `vignette("enrollment_hooks")` for 10 insights from Oregon enrollment data
+- Explore the raw data with `get_raw_enr(year)` to see original ODE columns
+- Check `?fetch_enr` for full documentation

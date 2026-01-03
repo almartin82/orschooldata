@@ -184,3 +184,286 @@ test_that("enr_grade_aggs creates grade aggregates", {
   expect_true("HS" %in% agg_levels)
   expect_true("K12" %in% agg_levels)
 })
+
+
+# ==============================================================================
+# Comprehensive Year Coverage Tests
+# These tests verify that EVERY available year processes correctly
+# ==============================================================================
+
+test_that("all available years have valid state totals", {
+  skip_on_cran()
+  skip_if_offline()
+
+  years <- get_available_years()
+
+  for (yr in years) {
+    result <- fetch_enr(yr, tidy = FALSE, use_cache = TRUE)
+
+    # Check state row exists and has valid total
+    state_row <- result[which(result$type == "State"), ]
+    expect_equal(nrow(state_row), 1, info = paste("Year", yr, "should have exactly 1 state row"))
+
+    state_total <- state_row$row_total
+    expect_false(is.na(state_total), info = paste("Year", yr, "state total should not be NA"))
+    expect_true(state_total > 400000, info = paste("Year", yr, "state total should be > 400k"))
+    expect_true(state_total < 800000, info = paste("Year", yr, "state total should be < 800k"))
+  }
+})
+
+test_that("all years have districts and campuses", {
+  skip_on_cran()
+  skip_if_offline()
+
+  years <- get_available_years()
+
+  for (yr in years) {
+    result <- fetch_enr(yr, tidy = FALSE, use_cache = TRUE)
+
+    n_districts <- sum(result$type == "District")
+    n_campuses <- sum(result$type == "Campus")
+
+    # Oregon has about 200 districts and 1400+ campuses
+    expect_true(n_districts >= 200, info = paste("Year", yr, "should have >= 200 districts"))
+    expect_true(n_districts <= 250, info = paste("Year", yr, "should have <= 250 districts"))
+    expect_true(n_campuses >= 1400, info = paste("Year", yr, "should have >= 1400 campuses"))
+    expect_true(n_campuses <= 1700, info = paste("Year", yr, "should have <= 1700 campuses"))
+  }
+})
+
+test_that("all years have complete grade columns", {
+  skip_on_cran()
+  skip_if_offline()
+
+  years <- get_available_years()
+
+  for (yr in years) {
+    result <- fetch_enr(yr, tidy = FALSE, use_cache = TRUE)
+    grade_cols <- grep("^grade_", names(result), value = TRUE)
+
+    # All years should have K-12 (13 grade columns)
+    expect_true(length(grade_cols) >= 13, info = paste("Year", yr, "should have >= 13 grade columns"))
+    expect_true("grade_k" %in% names(result), info = paste("Year", yr, "should have kindergarten"))
+    expect_true("grade_12" %in% names(result), info = paste("Year", yr, "should have grade 12"))
+  }
+})
+
+
+# ==============================================================================
+# Data Fidelity Tests
+# These tests verify that tidy output maintains FIDELITY to raw data
+# ==============================================================================
+
+test_that("tidy output maintains fidelity to raw data for 2024", {
+  skip_on_cran()
+  skip_if_offline()
+
+  # Get both raw and processed data
+  raw <- get_raw_enr(2024)
+  processed <- fetch_enr(2024, tidy = FALSE, use_cache = FALSE)
+
+  # Get campus-level data (exclude aggregates)
+  campus_processed <- processed[which(processed$type == "Campus"), ]
+
+  # Verify row counts match (should have same number of schools)
+  expect_equal(nrow(raw), nrow(campus_processed),
+               info = "Number of schools should match between raw and processed")
+
+  # Test a specific school for exact match
+  test_school_id <- "498"  # Adel Elementary
+  raw_school <- raw[which(raw$school_institution_id == test_school_id), ]
+  processed_school <- campus_processed[which(campus_processed$campus_id == test_school_id), ]
+
+  # Compare total enrollment
+  raw_total <- as.numeric(raw_school[["20232024_total_enrollment"]])
+  expect_equal(processed_school$row_total, raw_total,
+               info = "Total enrollment should match raw data")
+
+  # Compare grade-level counts
+  raw_k <- as.numeric(raw_school[["202324_kindergarten"]])
+  expect_equal(processed_school$grade_k, raw_k,
+               info = "Kindergarten count should match raw data")
+})
+
+test_that("grade totals sum correctly to row_total", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
+
+  # Get campus rows (excludes state/district aggregates)
+  campus_data <- result[which(result$type == "Campus"), ]
+
+  # Check a sample of schools
+  set.seed(42)
+  sample_idx <- sample(nrow(campus_data), min(50, nrow(campus_data)))
+  sample_schools <- campus_data[sample_idx, ]
+
+  grade_cols <- c("grade_k", paste0("grade_", sprintf("%02d", 1:12)))
+  grade_cols <- grade_cols[grade_cols %in% names(sample_schools)]
+
+  for (i in 1:nrow(sample_schools)) {
+    school <- sample_schools[i, ]
+    grade_sum <- sum(sapply(grade_cols, function(col) {
+      val <- school[[col]]
+      if (is.na(val)) 0 else val
+    }))
+    row_total <- school$row_total
+
+    # Allow small tolerance for rounding or ungraded students
+    if (!is.na(row_total) && row_total > 0) {
+      diff <- abs(grade_sum - row_total)
+      expect_true(diff <= row_total * 0.05,
+                  info = paste("School", school$campus_id, "grade sum differs from total by more than 5%"))
+    }
+  }
+})
+
+
+# ==============================================================================
+# Data Quality Tests
+# Check for improbable/impossible values
+# ==============================================================================
+
+test_that("no impossible zero values in state totals", {
+  skip_on_cran()
+  skip_if_offline()
+
+  years <- get_available_years()
+
+  for (yr in years) {
+    result <- fetch_enr(yr, tidy = FALSE, use_cache = TRUE)
+    state_row <- result[which(result$type == "State"), ]
+
+    # State total should never be zero
+    expect_true(state_row$row_total > 0,
+                info = paste("Year", yr, "state total should not be zero"))
+
+    # Grade columns should not all be zero at state level
+    grade_cols <- grep("^grade_", names(state_row), value = TRUE)
+    grade_sum <- sum(sapply(grade_cols, function(col) {
+      val <- state_row[[col]]
+      if (is.na(val)) 0 else val
+    }))
+    expect_true(grade_sum > 0,
+                info = paste("Year", yr, "state grade sum should not be zero"))
+  }
+})
+
+test_that("no Inf or NaN values in tidy output", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
+
+  # Check n_students for Inf/NaN
+  expect_false(any(is.infinite(result$n_students)),
+               info = "n_students should have no Inf values")
+  expect_false(any(is.nan(result$n_students[!is.na(result$n_students)])),
+               info = "n_students should have no NaN values")
+
+  # Check pct for Inf/NaN (can have NaN from 0/0 divisions)
+  expect_false(any(is.infinite(result$pct)),
+               info = "pct should have no Inf values")
+})
+
+test_that("district totals match sum of campus totals", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
+
+  # Get a sample of districts to check
+  district_data <- result[which(result$type == "District"), ]
+  campus_data <- result[which(result$type == "Campus"), ]
+
+  # Check first 10 districts
+  for (i in 1:min(10, nrow(district_data))) {
+    dist <- district_data[i, ]
+    dist_id <- dist$district_id
+
+    # Sum campus totals for this district
+    dist_campuses <- campus_data[which(campus_data$district_id == dist_id), ]
+    campus_sum <- sum(dist_campuses$row_total, na.rm = TRUE)
+
+    # District total should match sum of campuses
+    expect_equal(dist$row_total, campus_sum,
+                 info = paste("District", dist_id, "total should match sum of campuses"))
+  }
+})
+
+test_that("state totals match sum of district totals", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
+
+  state_row <- result[which(result$type == "State"), ]
+  district_data <- result[which(result$type == "District"), ]
+
+  district_sum <- sum(district_data$row_total, na.rm = TRUE)
+
+  expect_equal(state_row$row_total, district_sum,
+               info = "State total should match sum of districts")
+})
+
+test_that("enrollment counts are non-negative", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
+
+  # All n_students values should be >= 0
+  non_na_counts <- result$n_students[!is.na(result$n_students)]
+  expect_true(all(non_na_counts >= 0),
+              info = "All enrollment counts should be non-negative")
+})
+
+test_that("percentages are between 0 and 1", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
+
+  # Filter to valid percentages (not NA, not NaN)
+  valid_pct <- result$pct[!is.na(result$pct) & !is.nan(result$pct)]
+
+  expect_true(all(valid_pct >= 0),
+              info = "All percentages should be >= 0")
+  expect_true(all(valid_pct <= 1),
+              info = "All percentages should be <= 1")
+})
+
+
+# ==============================================================================
+# Tidy Format Verification
+# ==============================================================================
+
+test_that("tidy format has all expected grade levels", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
+
+  grade_levels <- unique(result$grade_level)
+
+  # Should have K-12 plus TOTAL
+  expected_grades <- c("TOTAL", "K", sprintf("%02d", 1:12))
+  for (grade in expected_grades) {
+    expect_true(grade %in% grade_levels,
+                info = paste("Grade level", grade, "should be present"))
+  }
+})
+
+test_that("tidy format has correct subgroup", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
+
+  subgroups <- unique(result$subgroup)
+
+  # Current implementation only has total_enrollment
+  expect_true("total_enrollment" %in% subgroups,
+              info = "total_enrollment subgroup should be present")
+})
