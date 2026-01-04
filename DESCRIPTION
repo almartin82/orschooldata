@@ -13,10 +13,11 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
-    readxl,
-    purrr,
     httr,
-    rappdirs
+    jsonlite,
+    purrr,
+    rappdirs,
+    readxl
 Suggests:
     testthat (>= 3.0.0),
     knitr,
