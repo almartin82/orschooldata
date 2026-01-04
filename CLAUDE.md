@@ -203,4 +203,3 @@ PRs auto-merge when ALL CI checks pass:
 - pkgdown build (vignettes must render)
 
 If CI fails, fix the issue and push - auto-merge triggers when checks pass.
-
