@@ -97,22 +97,23 @@ Education Fall Membership Reports, covering school years 2009-10 through
 <span></span>
 <span><span class="co"># View structure</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">enr_2024</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 22,876</span></span>
-<span><span class="co">#&gt; Columns: 14</span></span>
-<span><span class="co">#&gt; $ end_year      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>20…</span></span>
-<span><span class="co">#&gt; $ type          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "State"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ district_id   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1894"<span style="color: #949494;">, </span>"1895"<span style="color: #949494;">, </span>"1896"<span style="color: #949494;">, </span>"1897"<span style="color: #949494;">, </span>"1898"<span style="color: #949494;">, </span>"1899"<span style="color: #949494;">, </span>"190…</span></span>
-<span><span class="co">#&gt; $ campus_id     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ district_name <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"Baker SD 5J"<span style="color: #949494;">, </span>"Huntington SD 16J"<span style="color: #949494;">, </span>"Burnt River SD …</span></span>
-<span><span class="co">#&gt; $ campus_name   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ county        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ grade_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"T…</span></span>
-<span><span class="co">#&gt; $ subgroup      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "total_enrollment"<span style="color: #949494;">, </span>"total_enrollment"<span style="color: #949494;">, </span>"total_enrollmen…</span></span>
-<span><span class="co">#&gt; $ n_students    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 547424<span style="color: #949494;">, </span>4829<span style="color: #949494;">, </span>85<span style="color: #949494;">, </span>46<span style="color: #949494;">, </span>219<span style="color: #949494;">, </span>382<span style="color: #949494;">, </span>281<span style="color: #949494;">, </span>1667<span style="color: #949494;">, </span>6118<span style="color: #949494;">, </span>193<span style="color: #949494;">, </span>90…</span></span>
-<span><span class="co">#&gt; $ pct           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ is_state      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>F…</span></span>
-<span><span class="co">#&gt; $ is_district   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>T…</span></span>
-<span><span class="co">#&gt; $ is_campus     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>…</span></span></code></pre></div>
+<span><span class="co">#&gt; Rows: 34,314</span></span>
+<span><span class="co">#&gt; Columns: 15</span></span>
+<span><span class="co">#&gt; $ end_year         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">, </span>2024<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ type             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "State"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"District"<span style="color: #949494;">, </span>"Distric…</span></span>
+<span><span class="co">#&gt; $ district_id      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1894"<span style="color: #949494;">, </span>"1895"<span style="color: #949494;">, </span>"1896"<span style="color: #949494;">, </span>"1897"<span style="color: #949494;">, </span>"1898"<span style="color: #949494;">, </span>"1899"<span style="color: #949494;">, </span>"…</span></span>
+<span><span class="co">#&gt; $ campus_id        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">N</span>…</span></span>
+<span><span class="co">#&gt; $ district_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"Baker SD 5J"<span style="color: #949494;">, </span>"Huntington SD 16J"<span style="color: #949494;">, </span>"Burnt River …</span></span>
+<span><span class="co">#&gt; $ campus_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">N</span>…</span></span>
+<span><span class="co">#&gt; $ county           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">N</span>…</span></span>
+<span><span class="co">#&gt; $ grade_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">, </span>"TOTAL"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ subgroup         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "total_enrollment"<span style="color: #949494;">, </span>"total_enrollment"<span style="color: #949494;">, </span>"total_enroll…</span></span>
+<span><span class="co">#&gt; $ n_students       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 547424<span style="color: #949494;">, </span>4829<span style="color: #949494;">, </span>85<span style="color: #949494;">, </span>46<span style="color: #949494;">, </span>219<span style="color: #949494;">, </span>382<span style="color: #949494;">, </span>281<span style="color: #949494;">, </span>1667<span style="color: #949494;">, </span>6118<span style="color: #949494;">, </span>193<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ pct              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ aggregation_flag <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "state"<span style="color: #949494;">, </span>"district"<span style="color: #949494;">, </span>"district"<span style="color: #949494;">, </span>"district"<span style="color: #949494;">, </span>"distric…</span></span>
+<span><span class="co">#&gt; $ is_state         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE…</span></span>
+<span><span class="co">#&gt; $ is_district      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE…</span></span>
+<span><span class="co">#&gt; $ is_campus        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>FALS…</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="understanding-the-output">Understanding the output<a class="anchor" aria-label="anchor" href="#understanding-the-output"></a>
@@ -147,7 +148,7 @@ IDs</li>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_total</span><span class="op">$</span><span class="va">n_students</span></span>
-<span><span class="co">#&gt; [1] 547424</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 547424   6150  22288   4720  13114 141060 319798  40294</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># District-level data</span></span>
 <span><span class="va">districts</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
@@ -161,13 +162,13 @@ IDs</li>
 <span><span class="co">#&gt; 1                   Portland SD 1J      43979</span></span>
 <span><span class="co">#&gt; 2              Salem-Keizer SD 24J      38787</span></span>
 <span><span class="co">#&gt; 3                 Beaverton SD 48J      37988</span></span>
-<span><span class="co">#&gt; 4                  Hillsboro SD 1J      18716</span></span>
-<span><span class="co">#&gt; 5  Bend-LaPine Administrative SD 1      17075</span></span>
-<span><span class="co">#&gt; 6            North Clackamas SD 12      16874</span></span>
-<span><span class="co">#&gt; 7                     Eugene SD 4J      16318</span></span>
-<span><span class="co">#&gt; 8                  Medford SD 549C      13750</span></span>
-<span><span class="co">#&gt; 9           Tigard-Tualatin SD 23J      11620</span></span>
-<span><span class="co">#&gt; 10           Gresham-Barlow SD 10J      11371</span></span></code></pre></div>
+<span><span class="co">#&gt; 4                   Portland SD 1J      24276</span></span>
+<span><span class="co">#&gt; 5                  Hillsboro SD 1J      18716</span></span>
+<span><span class="co">#&gt; 6              Salem-Keizer SD 24J      18050</span></span>
+<span><span class="co">#&gt; 7  Bend-LaPine Administrative SD 1      17075</span></span>
+<span><span class="co">#&gt; 8            North Clackamas SD 12      16874</span></span>
+<span><span class="co">#&gt; 9                     Eugene SD 4J      16318</span></span>
+<span><span class="co">#&gt; 10                Beaverton SD 48J      15716</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="wide-format">Wide format<a class="anchor" aria-label="anchor" href="#wide-format"></a>
@@ -177,12 +178,13 @@ IDs</li>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enr_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">enr_wide</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "end_year"      "type"          "district_id"   "campus_id"    </span></span>
-<span><span class="co">#&gt;  [5] "district_name" "campus_name"   "county"        "row_total"    </span></span>
-<span><span class="co">#&gt;  [9] "grade_k"       "grade_01"      "grade_02"      "grade_03"     </span></span>
-<span><span class="co">#&gt; [13] "grade_04"      "grade_05"      "grade_06"      "grade_07"     </span></span>
-<span><span class="co">#&gt; [17] "grade_08"      "grade_09"      "grade_10"      "grade_11"     </span></span>
-<span><span class="co">#&gt; [21] "grade_12"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "end_year"         "type"             "district_id"      "campus_id"       </span></span>
+<span><span class="co">#&gt;  [5] "district_name"    "campus_name"      "county"           "row_total"       </span></span>
+<span><span class="co">#&gt;  [9] "grade_k"          "grade_01"         "grade_02"         "grade_03"        </span></span>
+<span><span class="co">#&gt; [13] "grade_04"         "grade_05"         "grade_06"         "grade_07"        </span></span>
+<span><span class="co">#&gt; [17] "grade_08"         "grade_09"         "grade_10"         "grade_11"        </span></span>
+<span><span class="co">#&gt; [21] "grade_12"         "native_american"  "asian"            "pacific_islander"</span></span>
+<span><span class="co">#&gt; [25] "black"            "hispanic"         "white"            "multiracial"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -201,12 +203,47 @@ IDs</li>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_trend</span></span>
-<span><span class="co">#&gt;   end_year n_students</span></span>
-<span><span class="co">#&gt; 1     2020     581730</span></span>
-<span><span class="co">#&gt; 2     2021     582661</span></span>
-<span><span class="co">#&gt; 3     2022     560904</span></span>
-<span><span class="co">#&gt; 4     2023     552990</span></span>
-<span><span class="co">#&gt; 5     2024     547424</span></span></code></pre></div>
+<span><span class="co">#&gt;    end_year n_students</span></span>
+<span><span class="co">#&gt; 1      2020     582661</span></span>
+<span><span class="co">#&gt; 2      2020       7010</span></span>
+<span><span class="co">#&gt; 3      2020      23208</span></span>
+<span><span class="co">#&gt; 4      2020       4431</span></span>
+<span><span class="co">#&gt; 5      2020      13176</span></span>
+<span><span class="co">#&gt; 6      2020     138273</span></span>
+<span><span class="co">#&gt; 7      2020     358257</span></span>
+<span><span class="co">#&gt; 8      2020      38306</span></span>
+<span><span class="co">#&gt; 9      2021     560917</span></span>
+<span><span class="co">#&gt; 10     2021       6570</span></span>
+<span><span class="co">#&gt; 11     2021      22733</span></span>
+<span><span class="co">#&gt; 12     2021       4335</span></span>
+<span><span class="co">#&gt; 13     2021      13021</span></span>
+<span><span class="co">#&gt; 14     2021     137101</span></span>
+<span><span class="co">#&gt; 15     2021     338528</span></span>
+<span><span class="co">#&gt; 16     2021      38629</span></span>
+<span><span class="co">#&gt; 17     2022     553012</span></span>
+<span><span class="co">#&gt; 18     2022       6357</span></span>
+<span><span class="co">#&gt; 19     2022      22145</span></span>
+<span><span class="co">#&gt; 20     2022       4454</span></span>
+<span><span class="co">#&gt; 21     2022      12731</span></span>
+<span><span class="co">#&gt; 22     2022     138112</span></span>
+<span><span class="co">#&gt; 23     2022     329994</span></span>
+<span><span class="co">#&gt; 24     2022      39219</span></span>
+<span><span class="co">#&gt; 25     2023     552380</span></span>
+<span><span class="co">#&gt; 26     2023       6532</span></span>
+<span><span class="co">#&gt; 27     2023      22181</span></span>
+<span><span class="co">#&gt; 28     2023       4633</span></span>
+<span><span class="co">#&gt; 29     2023      12982</span></span>
+<span><span class="co">#&gt; 30     2023     139928</span></span>
+<span><span class="co">#&gt; 31     2023     326100</span></span>
+<span><span class="co">#&gt; 32     2023      40024</span></span>
+<span><span class="co">#&gt; 33     2024     547424</span></span>
+<span><span class="co">#&gt; 34     2024       6150</span></span>
+<span><span class="co">#&gt; 35     2024      22288</span></span>
+<span><span class="co">#&gt; 36     2024       4720</span></span>
+<span><span class="co">#&gt; 37     2024      13114</span></span>
+<span><span class="co">#&gt; 38     2024     141060</span></span>
+<span><span class="co">#&gt; 39     2024     319798</span></span>
+<span><span class="co">#&gt; 40     2024      40294</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="calculate-year-over-year-changes">Calculate year-over-year changes<a class="anchor" aria-label="anchor" href="#calculate-year-over-year-changes"></a>
@@ -217,12 +254,47 @@ IDs</li>
 <span>    change <span class="op">=</span> <span class="va">n_students</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>,</span>
 <span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt;   end_year n_students change pct_change</span></span>
-<span><span class="co">#&gt; 1     2020     581730     NA         NA</span></span>
-<span><span class="co">#&gt; 2     2021     582661    931       0.16</span></span>
-<span><span class="co">#&gt; 3     2022     560904 -21757      -3.73</span></span>
-<span><span class="co">#&gt; 4     2023     552990  -7914      -1.41</span></span>
-<span><span class="co">#&gt; 5     2024     547424  -5566      -1.01</span></span></code></pre></div>
+<span><span class="co">#&gt;    end_year n_students  change pct_change</span></span>
+<span><span class="co">#&gt; 1      2020     582661      NA         NA</span></span>
+<span><span class="co">#&gt; 2      2020       7010 -575651     -98.80</span></span>
+<span><span class="co">#&gt; 3      2020      23208   16198     231.07</span></span>
+<span><span class="co">#&gt; 4      2020       4431  -18777     -80.91</span></span>
+<span><span class="co">#&gt; 5      2020      13176    8745     197.36</span></span>
+<span><span class="co">#&gt; 6      2020     138273  125097     949.43</span></span>
+<span><span class="co">#&gt; 7      2020     358257  219984     159.09</span></span>
+<span><span class="co">#&gt; 8      2020      38306 -319951     -89.31</span></span>
+<span><span class="co">#&gt; 9      2021     560917  522611    1364.31</span></span>
+<span><span class="co">#&gt; 10     2021       6570 -554347     -98.83</span></span>
+<span><span class="co">#&gt; 11     2021      22733   16163     246.01</span></span>
+<span><span class="co">#&gt; 12     2021       4335  -18398     -80.93</span></span>
+<span><span class="co">#&gt; 13     2021      13021    8686     200.37</span></span>
+<span><span class="co">#&gt; 14     2021     137101  124080     952.92</span></span>
+<span><span class="co">#&gt; 15     2021     338528  201427     146.92</span></span>
+<span><span class="co">#&gt; 16     2021      38629 -299899     -88.59</span></span>
+<span><span class="co">#&gt; 17     2022     553012  514383    1331.60</span></span>
+<span><span class="co">#&gt; 18     2022       6357 -546655     -98.85</span></span>
+<span><span class="co">#&gt; 19     2022      22145   15788     248.36</span></span>
+<span><span class="co">#&gt; 20     2022       4454  -17691     -79.89</span></span>
+<span><span class="co">#&gt; 21     2022      12731    8277     185.83</span></span>
+<span><span class="co">#&gt; 22     2022     138112  125381     984.85</span></span>
+<span><span class="co">#&gt; 23     2022     329994  191882     138.93</span></span>
+<span><span class="co">#&gt; 24     2022      39219 -290775     -88.12</span></span>
+<span><span class="co">#&gt; 25     2023     552380  513161    1308.45</span></span>
+<span><span class="co">#&gt; 26     2023       6532 -545848     -98.82</span></span>
+<span><span class="co">#&gt; 27     2023      22181   15649     239.57</span></span>
+<span><span class="co">#&gt; 28     2023       4633  -17548     -79.11</span></span>
+<span><span class="co">#&gt; 29     2023      12982    8349     180.21</span></span>
+<span><span class="co">#&gt; 30     2023     139928  126946     977.86</span></span>
+<span><span class="co">#&gt; 31     2023     326100  186172     133.05</span></span>
+<span><span class="co">#&gt; 32     2023      40024 -286076     -87.73</span></span>
+<span><span class="co">#&gt; 33     2024     547424  507400    1267.74</span></span>
+<span><span class="co">#&gt; 34     2024       6150 -541274     -98.88</span></span>
+<span><span class="co">#&gt; 35     2024      22288   16138     262.41</span></span>
+<span><span class="co">#&gt; 36     2024       4720  -17568     -78.82</span></span>
+<span><span class="co">#&gt; 37     2024      13114    8394     177.84</span></span>
+<span><span class="co">#&gt; 38     2024     141060  127946     975.64</span></span>
+<span><span class="co">#&gt; 39     2024     319798  178738     126.71</span></span>
+<span><span class="co">#&gt; 40     2024      40294 -279504     -87.40</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

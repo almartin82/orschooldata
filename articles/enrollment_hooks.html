@@ -96,16 +96,16 @@ year during the pandemic.</p>
 <span><span class="co">#&gt; 3      2012     561328   -368      -0.07</span></span>
 <span><span class="co">#&gt; 4      2013     560946   -382      -0.07</span></span>
 <span><span class="co">#&gt; 5      2014     562262   1316       0.23</span></span>
-<span><span class="co">#&gt; 6      2015     566721   4459       0.79</span></span>
-<span><span class="co">#&gt; 7      2016     570857   4136       0.73</span></span>
-<span><span class="co">#&gt; 8      2017     576407   5550       0.97</span></span>
-<span><span class="co">#&gt; 9      2018     578947   2540       0.44</span></span>
-<span><span class="co">#&gt; 10     2019     580648   1701       0.29</span></span>
-<span><span class="co">#&gt; 11     2020     581730   1082       0.19</span></span>
-<span><span class="co">#&gt; 12     2021     582661    931       0.16</span></span>
-<span><span class="co">#&gt; 13     2022     560904 -21757      -3.73</span></span>
-<span><span class="co">#&gt; 14     2023     552990  -7914      -1.41</span></span>
-<span><span class="co">#&gt; 15     2024     547424  -5566      -1.01</span></span></code></pre></div>
+<span><span class="co">#&gt; 6      2015     570857   8595       1.53</span></span>
+<span><span class="co">#&gt; 7      2016     576407   5550       0.97</span></span>
+<span><span class="co">#&gt; 8      2017     578947   2540       0.44</span></span>
+<span><span class="co">#&gt; 9      2018     580684   1737       0.30</span></span>
+<span><span class="co">#&gt; 10     2019     581730   1046       0.18</span></span>
+<span><span class="co">#&gt; 11     2020     582661    931       0.16</span></span>
+<span><span class="co">#&gt; 12     2021     560917 -21744      -3.73</span></span>
+<span><span class="co">#&gt; 13     2022     553012  -7905      -1.41</span></span>
+<span><span class="co">#&gt; 14     2023     552380   -632      -0.11</span></span>
+<span><span class="co">#&gt; 15     2024     547424  -4956      -0.90</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">state_totals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#002855"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -390,9 +390,9 @@ recovery.</p>
 <span><span class="va">decade_summary</span></span>
 <span><span class="co">#&gt;   end_year n_students          label</span></span>
 <span><span class="co">#&gt; 1     2010     561696 Post-recession</span></span>
-<span><span class="co">#&gt; 2     2015     566721     Mid-decade</span></span>
-<span><span class="co">#&gt; 3     2019     580648 Pre-COVID peak</span></span>
-<span><span class="co">#&gt; 4     2021     582661      COVID low</span></span>
+<span><span class="co">#&gt; 2     2015     570857     Mid-decade</span></span>
+<span><span class="co">#&gt; 3     2019     581730 Pre-COVID peak</span></span>
+<span><span class="co">#&gt; 4     2021     560917      COVID low</span></span>
 <span><span class="co">#&gt; 5     2024     547424        Current</span></span></code></pre></div>
 <hr>
 </div>
