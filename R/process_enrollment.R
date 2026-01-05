@@ -239,9 +239,10 @@ process_enr_era2 <- function(df, end_year) {
   n_rows <- nrow(df)
 
   # Build year prefix patterns for this year
-  # Oregon uses two formats: YYYYYYYY (e.g., 20232024) and YYYY (e.g., 202324)
+  # Oregon uses three formats: YYYYYYYY (e.g., 20232024), YYYYYY (e.g., 202223), and YY (e.g., 2324)
   start_year <- end_year - 1
   year_prefix_long <- paste0(start_year, end_year)  # e.g., "20232024"
+  year_prefix_medium <- paste0(start_year, substr(end_year, 3, 4))  # e.g., "202223"
   year_prefix_short <- paste0(substr(start_year, 3, 4), substr(end_year, 3, 4))  # e.g., "2324"
 
   # Helper to find column by pattern
@@ -323,6 +324,7 @@ process_enr_era2 <- function(df, end_year) {
   # Total enrollment - look for year-prefixed columns first, then generic
   # Format: YYYYYYYY_total_enrollment (e.g., 20232024_total_enrollment)
   total_patterns <- c(
+    paste0("^", year_prefix_medium, "_total_enrollment$"),
     paste0("^", year_prefix_long, "_total_enrollment$"),
     paste0("^", year_prefix_short, "_total_enrollment$"),
     "total_enrollment$",
@@ -337,11 +339,13 @@ process_enr_era2 <- function(df, end_year) {
   }
 
   # Grade levels - Oregon uses year-prefixed columns
-  # Format: YYYY_kindergarten, YYYY_grade_one, YYYY_grade_two, etc.
-  # The short year prefix (e.g., 2324) is used for grade columns
+  # Format: YYYYYY_kindergarten, YYYYYY_grade_one, YYYYYY_grade_two, etc.
+  # The medium year prefix (6 digits) is used: 202122, 202223, 202324, etc.
+  # This matches Oregon's actual column naming convention
 
   # Kindergarten patterns
   k_patterns <- c(
+    paste0("^", year_prefix_medium, "_kindergarten$"),
     paste0("^", year_prefix_short, "_kindergarten$"),
     paste0("^", year_prefix_long, "_kindergarten$"),
     "kindergarten$",
@@ -366,6 +370,7 @@ process_enr_era2 <- function(df, end_year) {
 
     # Build patterns for this grade
     patterns <- c(
+      paste0("^", year_prefix_medium, "_grade_", word, "$"),
       paste0("^", year_prefix_short, "_grade_", word, "$"),
       paste0("^", year_prefix_long, "_grade_", word, "$"),
       paste0("grade_", word, "$"),
@@ -382,6 +387,8 @@ process_enr_era2 <- function(df, end_year) {
 
   # Pre-K (not always present)
   pk_patterns <- c(
+    paste0("^", year_prefix_medium, "_pre_k$"),
+    paste0("^", year_prefix_medium, "_prek$"),
     paste0("^", year_prefix_short, "_pre_k$"),
     paste0("^", year_prefix_short, "_prek$"),
     paste0("^", year_prefix_short, "_prekindergarten$"),
@@ -394,6 +401,8 @@ process_enr_era2 <- function(df, end_year) {
 
   # Ungraded students
   ug_patterns <- c(
+    paste0("^", year_prefix_medium, "_ug$"),
+    paste0("^", year_prefix_medium, "_ungraded$"),
     paste0("^", year_prefix_short, "_ug$"),
     paste0("^", year_prefix_short, "_ungraded$"),
     "^ug$", "ungraded$", "^ungraded$"
@@ -401,6 +410,62 @@ process_enr_era2 <- function(df, end_year) {
   ug_col <- find_col(ug_patterns)
   if (!is.null(ug_col)) {
     result$grade_ug <- safe_numeric(df[[ug_col]])
+  }
+
+  # Demographic subgroups (Era 2 only, 2015+)
+  # Oregon data has year-prefixed demographic columns for Era 2
+  # Race/ethnicity columns
+  demo_patterns <- list(
+    native_american = c(
+      paste0("^", year_prefix_medium, "_american_indianalaska_native$"),
+      paste0("^", year_prefix_short, "_american_indianalaska_native$"),
+      paste0("^", year_prefix_long, "_american_indianalaska_native$"),
+      "american_indianalaska_native$"
+    ),
+    asian = c(
+      paste0("^", year_prefix_medium, "_asian$"),
+      paste0("^", year_prefix_short, "_asian$"),
+      paste0("^", year_prefix_long, "_asian$"),
+      "^asian$"
+    ),
+    pacific_islander = c(
+      paste0("^", year_prefix_medium, "_native_hawaiian_pacific_islander$"),
+      paste0("^", year_prefix_short, "_native_hawaiian_pacific_islander$"),
+      paste0("^", year_prefix_long, "_native_hawaiian_pacific_islander$"),
+      "native_hawaiian_pacific_islander$"
+    ),
+    black = c(
+      paste0("^", year_prefix_medium, "_blackafrican_american$"),
+      paste0("^", year_prefix_short, "_blackafrican_american$"),
+      paste0("^", year_prefix_long, "_blackafrican_american$"),
+      "blackafrican_american$"
+    ),
+    hispanic = c(
+      paste0("^", year_prefix_medium, "_hispanic_latino$"),
+      paste0("^", year_prefix_short, "_hispanic_latino$"),
+      paste0("^", year_prefix_long, "_hispanic_latino$"),
+      "hispanic_latino$"
+    ),
+    white = c(
+      paste0("^", year_prefix_medium, "_white$"),
+      paste0("^", year_prefix_short, "_white$"),
+      paste0("^", year_prefix_long, "_white$"),
+      "^white$"
+    ),
+    multiracial = c(
+      paste0("^", year_prefix_medium, "_multiracial$"),
+      paste0("^", year_prefix_short, "_multiracial$"),
+      paste0("^", year_prefix_long, "_multiracial$"),
+      "^multiracial$"
+    )
+  )
+
+  for (demo_name in names(demo_patterns)) {
+    patterns <- demo_patterns[[demo_name]]
+    col <- find_col(patterns)
+    if (!is.null(col)) {
+      result[[demo_name]] <- safe_numeric(df[[col]])
+    }
   }
 
   # Filter out rows without valid identifiers
@@ -431,7 +496,9 @@ create_district_aggregate <- function(school_df, end_year) {
     "grade_01", "grade_02", "grade_03", "grade_04",
     "grade_05", "grade_06", "grade_07", "grade_08",
     "grade_09", "grade_10", "grade_11", "grade_12",
-    "grade_ug"
+    "grade_ug",
+    "native_american", "asian", "pacific_islander",
+    "black", "hispanic", "white", "multiracial"
   )
 
   # Filter to columns that exist
@@ -498,7 +565,9 @@ create_state_aggregate <- function(district_df, end_year) {
     "grade_01", "grade_02", "grade_03", "grade_04",
     "grade_05", "grade_06", "grade_07", "grade_08",
     "grade_09", "grade_10", "grade_11", "grade_12",
-    "grade_ug"
+    "grade_ug",
+    "native_american", "asian", "pacific_islander",
+    "black", "hispanic", "white", "multiracial"
   )
 
   # Filter to columns that exist
