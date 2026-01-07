@@ -455,7 +455,7 @@ test_that("tidy format has all expected grade levels", {
   }
 })
 
-test_that("tidy format has correct subgroup", {
+test_that("tidy format has correct subgroups for Era 2", {
   skip_on_cran()
   skip_if_offline()
 
@@ -463,7 +463,95 @@ test_that("tidy format has correct subgroup", {
 
   subgroups <- unique(result$subgroup)
 
-  # Current implementation only has total_enrollment
+  # Era 2 should have total_enrollment + 7 demographic subgroups
   expect_true("total_enrollment" %in% subgroups,
               info = "total_enrollment subgroup should be present")
+  expect_true("native_american" %in% subgroups,
+              info = "native_american subgroup should be present")
+  expect_true("asian" %in% subgroups,
+              info = "asian subgroup should be present")
+  expect_true("pacific_islander" %in% subgroups,
+              info = "pacific_islander subgroup should be present")
+  expect_true("black" %in% subgroups,
+              info = "black subgroup should be present")
+  expect_true("hispanic" %in% subgroups,
+              info = "hispanic subgroup should be present")
+  expect_true("white" %in% subgroups,
+              info = "white subgroup should be present")
+  expect_true("multiracial" %in% subgroups,
+              info = "multiracial subgroup should be present")
+
+  # Should have exactly 8 subgroups
+  expect_equal(length(subgroups), 8,
+               info = "Should have exactly 8 subgroups")
+})
+
+test_that("tidy format has correct subgroups for Era 1", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2014, tidy = TRUE, use_cache = TRUE)
+
+  subgroups <- unique(result$subgroup)
+
+  # Era 1 only has total_enrollment (no demographic breakdowns)
+  expect_true("total_enrollment" %in% subgroups,
+              info = "total_enrollment subgroup should be present")
+  expect_equal(length(subgroups), 1,
+               info = "Era 1 should have only 1 subgroup")
+})
+
+test_that("demographic subgroups sum correctly to total_enrollment", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
+
+  # Get campus-level data
+  campus_data <- result[which(result$type == "Campus"), ]
+
+  # Check a sample of schools
+  set.seed(42)
+  sample_idx <- sample(nrow(campus_data), min(20, nrow(campus_data)))
+  sample_schools <- campus_data[sample_idx, ]
+
+  demo_cols <- c("native_american", "asian", "pacific_islander",
+                 "black", "hispanic", "white", "multiracial")
+
+  for (i in 1:nrow(sample_schools)) {
+    school <- sample_schools[i, ]
+
+    # Sum all demographic subgroups
+    demo_sum <- sum(sapply(demo_cols, function(col) {
+      val <- school[[col]]
+      if (is.na(val)) 0 else val
+    }))
+
+    row_total <- school$row_total
+
+    # Demographics should sum to total (allowing small tolerance for rounding/missing categories)
+    if (!is.na(row_total) && row_total > 0) {
+      diff <- abs(demo_sum - row_total)
+      expect_true(diff <= row_total * 0.01,
+                  info = paste("School", school$campus_id, "demographic sum differs from total by more than 1%"))
+    }
+  }
+})
+
+test_that("demographic counts are non-negative", {
+  skip_on_cran()
+  skip_if_offline()
+
+  result <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
+
+  demo_cols <- c("native_american", "asian", "pacific_islander",
+                 "black", "hispanic", "white", "multiracial")
+
+  for (col in demo_cols) {
+    if (col %in% names(result)) {
+      values <- result[[col]][!is.na(result[[col]])]
+      expect_true(all(values >= 0),
+                  info = paste("Column", col, "should have all non-negative values"))
+    }
+  }
 })
