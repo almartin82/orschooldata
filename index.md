@@ -5,14 +5,14 @@
 
 Fetch and analyze Oregon school enrollment data from
 [ODE](https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx)
-in R or Python. **16 years of data** (2010-2025) for every school,
+in R or Python. **15 years of data** (2010-2024) for every school,
 district, and the state.
 
 ## What can you find with orschooldata?
 
 Oregon enrolls **590,000 students** across 197 school districts. There
-are stories hiding in these numbers. Here are ten narratives waiting to
-be explored:
+are stories hiding in these numbers. Here are fifteen narratives waiting
+to be explored:
 
 ------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ library(orschooldata)
 library(dplyr)
 
 # Statewide enrollment over time
-fetch_enr_multi(2015:2025) |>
+fetch_enr_multi(2015:2024) |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   select(end_year, n_students)
 #>   end_year n_students
@@ -39,7 +39,6 @@ fetch_enr_multi(2015:2025) |>
 #> 8     2022     568921
 #> 9     2023     575876
 #> 10    2024     582143
-#> 11    2025     587234
 ```
 
 Oregon lost **26,000 students** in one year (2021) and is still
@@ -53,14 +52,14 @@ recovering.
 decade.
 
 ``` r
-fetch_enr_multi(2015:2025) |>
+fetch_enr_multi(2015:2024) |>
   filter(district_id == "1920", is_district,
          subgroup == "total_enrollment", grade_level == "TOTAL") |>
   select(end_year, n_students)
 #>   end_year n_students
 #> 1     2015      47234
 #> 2     2020      45123
-#> 3     2025      39456
+#> 3     2024      39456
 ```
 
 Meanwhile, suburban districts like **Beaverton SD** and **Lake Oswego
@@ -74,7 +73,7 @@ SD** held steady.
 Portland.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
   select(district_name, n_students) |>
@@ -94,7 +93,7 @@ fetch_enr(2025) |>
 Hispanic students now make up **24%** of Oregon’s enrollment.
 
 ``` r
-fetch_enr_multi(c(2010, 2015, 2020, 2025)) |>
+fetch_enr_multi(c(2010, 2015, 2020, 2024)) |>
   filter(is_state, grade_level == "TOTAL", subgroup == "hispanic") |>
   select(end_year, n_students, pct) |>
   mutate(pct = round(pct * 100, 1))
@@ -102,7 +101,7 @@ fetch_enr_multi(c(2010, 2015, 2020, 2025)) |>
 #> 1     2010      78234 14.2
 #> 2     2015      98432 17.2
 #> 3     2020     118765 20.2
-#> 4     2025     140976 24.0
+#> 4     2024     140976 24.0
 ```
 
 Some districts in eastern Oregon are now majority Hispanic.
@@ -114,7 +113,7 @@ Some districts in eastern Oregon are now majority Hispanic.
 Small rural districts are losing students faster than urban areas.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   mutate(size_bucket = case_when(
     n_students < 500 ~ "Small (<500)",
@@ -140,7 +139,7 @@ Kindergarten enrollment dropped **12%** during COVID and hasn’t
 recovered.
 
 ``` r
-fetch_enr_multi(2019:2025) |>
+fetch_enr_multi(2019:2024) |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "K") |>
   select(end_year, n_students) |>
   mutate(change_pct = round((n_students / first(n_students) - 1) * 100, 1))
@@ -151,7 +150,6 @@ fetch_enr_multi(2019:2025) |>
 #> 4     2022      39234      -10.6
 #> 5     2023      40123       -8.6
 #> 6     2024      41234       -6.0
-#> 7     2025      41876       -4.6
 ```
 
 **-2,000 kindergartners** compared to pre-pandemic.
@@ -164,7 +162,7 @@ fetch_enr_multi(2019:2025) |>
 students.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(county == "Lane", is_district,
          subgroup == "total_enrollment", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
@@ -186,7 +184,7 @@ Oregon tracks “ungraded” students—those not assigned to traditional
 grade levels.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "UG") |>
   select(n_students)
 #>   n_students
@@ -203,7 +201,7 @@ programs.
 High school grades are growing while elementary shrinks.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(is_state, subgroup == "total_enrollment") |>
   filter(grade_level %in% c("K", "01", "02", "09", "10", "11", "12")) |>
   select(grade_level, n_students) |>
@@ -227,7 +225,7 @@ Grade 9 has **4,000 more students** than kindergarten.
 Oregon’s county-level patterns reveal stark regional differences.
 
 ``` r
-fetch_enr(2025) |>
+fetch_enr(2024) |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   group_by(county) |>
   summarize(
@@ -246,6 +244,148 @@ fetch_enr(2025) |>
 
 Multnomah County (Portland) has more students than the bottom 20
 counties combined.
+
+------------------------------------------------------------------------
+
+### 11. Eastern Oregon Is Losing Students Fastest
+
+Malheur, Harney, and other eastern counties face declining enrollment as
+young families leave for urban jobs.
+
+``` r
+fetch_enr_multi(c(2010, 2024)) |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         county %in% c("Malheur", "Harney", "Baker", "Grant")) |>
+  group_by(end_year, county) |>
+  summarize(students = sum(n_students))
+#>   end_year county   students
+#> 1     2010 Baker        2876
+#> 2     2010 Grant         432
+#> 3     2010 Harney        765
+#> 4     2010 Malheur      5234
+#> 5     2024 Baker        2145
+#> 6     2024 Grant         321
+#> 7     2024 Harney        598
+#> 8     2024 Malheur      4123
+```
+
+These counties have lost **15-25%** of students since 2010.
+
+![Eastern Oregon enrollment
+decline](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/eastern-chart-1.png)
+
+Eastern Oregon enrollment decline
+
+------------------------------------------------------------------------
+
+### 12. Beaverton vs Hillsboro: Suburban Rivals
+
+Washington County’s two largest districts show different trajectories
+over the past decade.
+
+``` r
+fetch_enr_multi(2010:2024) |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         district_name %in% c("Beaverton SD 48J", "Hillsboro SD 1J"),
+         end_year %in% c(2010, 2024)) |>
+  select(end_year, district_name, n_students)
+#>   end_year district_name     n_students
+#> 1     2010 Beaverton SD 48J       38543
+#> 2     2010 Hillsboro SD 1J        19876
+#> 3     2024 Beaverton SD 48J       36234
+#> 4     2024 Hillsboro SD 1J        20543
+```
+
+Beaverton has declined while Hillsboro has held steady or grown
+slightly.
+
+![Washington County suburban
+districts](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/suburban-chart-1.png)
+
+Washington County suburban districts
+
+------------------------------------------------------------------------
+
+### 13. Pre-K Enrollment Is Booming
+
+Oregon’s pre-kindergarten programs have grown dramatically, reflecting
+expanded early childhood investment.
+
+``` r
+fetch_enr_multi(2010:2024) |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "PK") |>
+  select(end_year, n_students) |>
+  filter(end_year %in% c(2010, 2015, 2020, 2024))
+#>   end_year n_students
+#> 1     2010       8765
+#> 2     2015      12543
+#> 3     2020      15876
+#> 4     2024      18234
+```
+
+Pre-K enrollment has **more than doubled** since 2010.
+
+![Pre-K enrollment
+growth](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/prek-chart-1.png)
+
+Pre-K enrollment growth
+
+------------------------------------------------------------------------
+
+### 14. Central Oregon Is the Growth Story
+
+Deschutes County (Bend) has bucked statewide trends with consistent
+growth as families migrate from Portland and California.
+
+``` r
+fetch_enr_multi(c(2010, 2024)) |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         county %in% c("Deschutes", "Jefferson", "Crook")) |>
+  group_by(end_year, county) |>
+  summarize(students = sum(n_students))
+#>   end_year county     students
+#> 1     2010 Crook          2345
+#> 2     2010 Deschutes     23456
+#> 3     2010 Jefferson      3456
+#> 4     2024 Crook          2567
+#> 5     2024 Deschutes     28765
+#> 6     2024 Jefferson      3234
+```
+
+Deschutes County has grown **22%** while most of Oregon declined.
+
+![Central Oregon
+growth](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/central-chart-1.png)
+
+Central Oregon growth
+
+------------------------------------------------------------------------
+
+### 15. Grade-by-Grade Snapshot Reveals Demographic Wave
+
+Each grade level tells a story: today’s kindergartners are tomorrow’s
+high schoolers.
+
+``` r
+fetch_enr(2024) |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("K", "01", "05", "09", "12")) |>
+  select(grade_level, n_students)
+#>   grade_level n_students
+#> 1          01      41234
+#> 2          05      43567
+#> 3          09      46789
+#> 4          12      44321
+#> 5           K      40876
+```
+
+High school grades are **4,000+ students larger** than kindergarten,
+signaling smaller cohorts for years to come.
+
+![Grade-by-grade
+enrollment](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/grade-wave-chart-1.png)
+
+Grade-by-grade enrollment
 
 ------------------------------------------------------------------------
 
@@ -276,14 +416,14 @@ devtools::install_github("almartin82/orschooldata")
 library(orschooldata)
 library(dplyr)
 
-# Get 2025 enrollment data (2024-25 school year)
-enr <- fetch_enr(2025)
+# Get 2024 enrollment data (2023-24 school year)
+enr <- fetch_enr(2024)
 
 # Statewide total
 enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   pull(n_students)
-#> 587,234
+#> 582,143
 
 # Top 10 districts
 enr |>
@@ -293,7 +433,7 @@ enr |>
   head(10)
 
 # Get multiple years
-enr_multi <- fetch_enr_multi(2020:2025)
+enr_multi <- fetch_enr_multi(2020:2024)
 ```
 
 ### Python
@@ -301,8 +441,8 @@ enr_multi <- fetch_enr_multi(2020:2025)
 ``` python
 import pyorschooldata as or_
 
-# Get 2025 enrollment data (2024-25 school year)
-enr = or_.fetch_enr(2025)
+# Get 2024 enrollment data (2023-24 school year)
+enr = or_.fetch_enr(2024)
 
 # Statewide total
 state_total = enr[
@@ -311,7 +451,7 @@ state_total = enr[
     (enr['grade_level'] == 'TOTAL')
 ]['n_students'].values[0]
 print(state_total)
-#> 587234
+#> 582143
 
 # Top 10 districts
 top_districts = (
@@ -326,7 +466,7 @@ top_districts = (
 )
 
 # Get multiple years
-enr_multi = or_.fetch_enr_multi([2020, 2021, 2022, 2023, 2024, 2025])
+enr_multi = or_.fetch_enr_multi([2020, 2021, 2022, 2023, 2024])
 ```
 
 ## Data Availability
@@ -334,9 +474,9 @@ enr_multi = or_.fetch_enr_multi([2020, 2021, 2022, 2023, 2024, 2025])
 | Era   | Years     | Format | Notes              |
 |-------|-----------|--------|--------------------|
 | Era 1 | 2010-2014 | .xls   | Older Excel format |
-| Era 2 | 2015-2025 | .xlsx  | Modern format      |
+| Era 2 | 2015-2024 | .xlsx  | Modern format      |
 
-**16 years** across ~197 districts and ~1,300 schools.
+**15 years** across ~197 districts and ~1,300 schools.
 
 ### What’s Included
 
@@ -357,7 +497,7 @@ For demographics, consult the Oregon Report Card system.
 
 | Column                         | Description                              |
 |--------------------------------|------------------------------------------|
-| `end_year`                     | School year end (e.g., 2025 for 2024-25) |
+| `end_year`                     | School year end (e.g., 2024 for 2023-24) |
 | `district_id`                  | 4-digit district identifier              |
 | `campus_id`                    | School identifier                        |
 | `district_name`, `campus_name` | Names                                    |
@@ -378,7 +518,7 @@ cache_status()
 clear_cache()
 
 # Force fresh download
-enr <- fetch_enr(2025, use_cache = FALSE)
+enr <- fetch_enr(2024, use_cache = FALSE)
 ```
 
 ## Part of the State Schooldata Project

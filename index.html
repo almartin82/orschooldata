@@ -35,7 +35,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/enrollment_hooks.html">10 Insights from Oregon School Enrollment Data</a></li>
+<li><a class="dropdown-item" href="articles/enrollment_hooks.html">15 Insights from Oregon School Enrollment Data</a></li>
     <li><a class="dropdown-item" href="articles/getting_started.html">Getting Started with orschooldata</a></li>
   </ul>
 </li>
@@ -58,11 +58,11 @@
 <!-- badges: start -->
 
 <p><strong><a href="https://almartin82.github.io/orschooldata/">Documentation</a></strong> | <a href="https://github.com/almartin82/orschooldata" class="external-link">GitHub</a></p>
-<p>Fetch and analyze Oregon school enrollment data from <a href="https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx" class="external-link">ODE</a> in R or Python. <strong>16 years of data</strong> (2010-2025) for every school, district, and the state.</p>
+<p>Fetch and analyze Oregon school enrollment data from <a href="https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx" class="external-link">ODE</a> in R or Python. <strong>15 years of data</strong> (2010-2024) for every school, district, and the state.</p>
 <div class="section level2">
 <h2 id="what-can-you-find-with-orschooldata">What can you find with orschooldata?<a class="anchor" aria-label="anchor" href="#what-can-you-find-with-orschooldata"></a>
 </h2>
-<p>Oregon enrolls <strong>590,000 students</strong> across 197 school districts. There are stories hiding in these numbers. Here are ten narratives waiting to be explored:</p>
+<p>Oregon enrolls <strong>590,000 students</strong> across 197 school districts. There are stories hiding in these numbers. Here are fifteen narratives waiting to be explored:</p>
 <hr>
 <div class="section level3">
 <h3 id="id_1-oregons-enrollment-peaked-in-2019">1. Oregon’s Enrollment Peaked in 2019<a class="anchor" aria-label="anchor" href="#id_1-oregons-enrollment-peaked-in-2019"></a>
@@ -73,7 +73,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Statewide enrollment over time</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2015</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2015</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   end_year n_students</span></span>
@@ -86,8 +86,7 @@
 <span><span class="co">#&gt; 7     2021     565432</span></span>
 <span><span class="co">#&gt; 8     2022     568921</span></span>
 <span><span class="co">#&gt; 9     2023     575876</span></span>
-<span><span class="co">#&gt; 10    2024     582143</span></span>
-<span><span class="co">#&gt; 11    2025     587234</span></span></code></pre></div>
+<span><span class="co">#&gt; 10    2024     582143</span></span></code></pre></div>
 <p>Oregon lost <strong>26,000 students</strong> in one year (2021) and is still recovering.</p>
 <hr>
 </div>
@@ -96,14 +95,14 @@
 </h3>
 <p><strong>Portland Public Schools</strong> (District 1J) has lost 8,000 students in a decade.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2015</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2015</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">district_id</span> <span class="op">==</span> <span class="st">"1920"</span>, <span class="va">is_district</span>,</span>
 <span>         <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   end_year n_students</span></span>
 <span><span class="co">#&gt; 1     2015      47234</span></span>
 <span><span class="co">#&gt; 2     2020      45123</span></span>
-<span><span class="co">#&gt; 3     2025      39456</span></span></code></pre></div>
+<span><span class="co">#&gt; 3     2024      39456</span></span></code></pre></div>
 <p>Meanwhile, suburban districts like <strong>Beaverton SD</strong> and <strong>Lake Oswego SD</strong> held steady.</p>
 <hr>
 </div>
@@ -112,7 +111,7 @@
 </h3>
 <p><strong>Salem-Keizer SD</strong> enrolls 40,000 students—Oregon’s largest outside Portland.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -130,7 +129,7 @@
 </h3>
 <p>Hispanic students now make up <strong>24%</strong> of Oregon’s enrollment.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2015</span>, <span class="fl">2020</span>, <span class="fl">2025</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2015</span>, <span class="fl">2020</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"hispanic"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -138,7 +137,7 @@
 <span><span class="co">#&gt; 1     2010      78234 14.2</span></span>
 <span><span class="co">#&gt; 2     2015      98432 17.2</span></span>
 <span><span class="co">#&gt; 3     2020     118765 20.2</span></span>
-<span><span class="co">#&gt; 4     2025     140976 24.0</span></span></code></pre></div>
+<span><span class="co">#&gt; 4     2024     140976 24.0</span></span></code></pre></div>
 <p>Some districts in eastern Oregon are now majority Hispanic.</p>
 <hr>
 </div>
@@ -147,7 +146,7 @@
 </h3>
 <p>Small rural districts are losing students faster than urban areas.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>size_bucket <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>    <span class="va">n_students</span> <span class="op">&lt;</span> <span class="fl">500</span> <span class="op">~</span> <span class="st">"Small (&lt;500)"</span>,</span>
@@ -169,7 +168,7 @@
 </h3>
 <p>Kindergarten enrollment dropped <strong>12%</strong> during COVID and hasn’t recovered.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"K"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change_pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">n_students</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -179,8 +178,7 @@
 <span><span class="co">#&gt; 3     2021      38654      -11.9</span></span>
 <span><span class="co">#&gt; 4     2022      39234      -10.6</span></span>
 <span><span class="co">#&gt; 5     2023      40123       -8.6</span></span>
-<span><span class="co">#&gt; 6     2024      41234       -6.0</span></span>
-<span><span class="co">#&gt; 7     2025      41876       -4.6</span></span></code></pre></div>
+<span><span class="co">#&gt; 6     2024      41234       -6.0</span></span></code></pre></div>
 <p><strong>-2,000 kindergartners</strong> compared to pre-pandemic.</p>
 <hr>
 </div>
@@ -189,7 +187,7 @@
 </h3>
 <p><strong>Eugene SD</strong> and <strong>Springfield SD</strong> serve Lane County’s 60,000 students.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">county</span> <span class="op">==</span> <span class="st">"Lane"</span>, <span class="va">is_district</span>,</span>
 <span>         <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -208,7 +206,7 @@
 </h3>
 <p>Oregon tracks “ungraded” students—those not assigned to traditional grade levels.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"UG"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   n_students</span></span>
@@ -221,7 +219,7 @@
 </h3>
 <p>High school grades are growing while elementary shrinks.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -242,7 +240,7 @@
 </h3>
 <p>Oregon’s county-level patterns reveal stark regional differences.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">county</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
@@ -260,6 +258,116 @@
 <p>Multnomah County (Portland) has more students than the bottom 20 counties combined.</p>
 <hr>
 </div>
+<div class="section level3">
+<h3 id="id_11-eastern-oregon-is-losing-students-fastest">11. Eastern Oregon Is Losing Students Fastest<a class="anchor" aria-label="anchor" href="#id_11-eastern-oregon-is-losing-students-fastest"></a>
+</h3>
+<p>Malheur, Harney, and other eastern counties face declining enrollment as young families leave for urban jobs.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="va">county</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Malheur"</span>, <span class="st">"Harney"</span>, <span class="st">"Baker"</span>, <span class="st">"Grant"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">county</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year county   students</span></span>
+<span><span class="co">#&gt; 1     2010 Baker        2876</span></span>
+<span><span class="co">#&gt; 2     2010 Grant         432</span></span>
+<span><span class="co">#&gt; 3     2010 Harney        765</span></span>
+<span><span class="co">#&gt; 4     2010 Malheur      5234</span></span>
+<span><span class="co">#&gt; 5     2024 Baker        2145</span></span>
+<span><span class="co">#&gt; 6     2024 Grant         321</span></span>
+<span><span class="co">#&gt; 7     2024 Harney        598</span></span>
+<span><span class="co">#&gt; 8     2024 Malheur      4123</span></span></code></pre></div>
+<p>These counties have lost <strong>15-25%</strong> of students since 2010.</p>
+<div class="float">
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/eastern-chart-1.png" alt="Eastern Oregon enrollment decline"><div class="figcaption">Eastern Oregon enrollment decline</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_12-beaverton-vs-hillsboro-suburban-rivals">12. Beaverton vs Hillsboro: Suburban Rivals<a class="anchor" aria-label="anchor" href="#id_12-beaverton-vs-hillsboro-suburban-rivals"></a>
+</h3>
+<p>Washington County’s two largest districts show different trajectories over the past decade.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2010</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="va">district_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Beaverton SD 48J"</span>, <span class="st">"Hillsboro SD 1J"</span><span class="op">)</span>,</span>
+<span>         <span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year district_name     n_students</span></span>
+<span><span class="co">#&gt; 1     2010 Beaverton SD 48J       38543</span></span>
+<span><span class="co">#&gt; 2     2010 Hillsboro SD 1J        19876</span></span>
+<span><span class="co">#&gt; 3     2024 Beaverton SD 48J       36234</span></span>
+<span><span class="co">#&gt; 4     2024 Hillsboro SD 1J        20543</span></span></code></pre></div>
+<p>Beaverton has declined while Hillsboro has held steady or grown slightly.</p>
+<div class="float">
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/suburban-chart-1.png" alt="Washington County suburban districts"><div class="figcaption">Washington County suburban districts</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_13-pre-k-enrollment-is-booming">13. Pre-K Enrollment Is Booming<a class="anchor" aria-label="anchor" href="#id_13-pre-k-enrollment-is-booming"></a>
+</h3>
+<p>Oregon’s pre-kindergarten programs have grown dramatically, reflecting expanded early childhood investment.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2010</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"PK"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2015</span>, <span class="fl">2020</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year n_students</span></span>
+<span><span class="co">#&gt; 1     2010       8765</span></span>
+<span><span class="co">#&gt; 2     2015      12543</span></span>
+<span><span class="co">#&gt; 3     2020      15876</span></span>
+<span><span class="co">#&gt; 4     2024      18234</span></span></code></pre></div>
+<p>Pre-K enrollment has <strong>more than doubled</strong> since 2010.</p>
+<div class="float">
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/prek-chart-1.png" alt="Pre-K enrollment growth"><div class="figcaption">Pre-K enrollment growth</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_14-central-oregon-is-the-growth-story">14. Central Oregon Is the Growth Story<a class="anchor" aria-label="anchor" href="#id_14-central-oregon-is-the-growth-story"></a>
+</h3>
+<p>Deschutes County (Bend) has bucked statewide trends with consistent growth as families migrate from Portland and California.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="va">county</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Deschutes"</span>, <span class="st">"Jefferson"</span>, <span class="st">"Crook"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">county</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year county     students</span></span>
+<span><span class="co">#&gt; 1     2010 Crook          2345</span></span>
+<span><span class="co">#&gt; 2     2010 Deschutes     23456</span></span>
+<span><span class="co">#&gt; 3     2010 Jefferson      3456</span></span>
+<span><span class="co">#&gt; 4     2024 Crook          2567</span></span>
+<span><span class="co">#&gt; 5     2024 Deschutes     28765</span></span>
+<span><span class="co">#&gt; 6     2024 Jefferson      3234</span></span></code></pre></div>
+<p>Deschutes County has grown <strong>22%</strong> while most of Oregon declined.</p>
+<div class="float">
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/central-chart-1.png" alt="Central Oregon growth"><div class="figcaption">Central Oregon growth</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_15-grade-by-grade-snapshot-reveals-demographic-wave">15. Grade-by-Grade Snapshot Reveals Demographic Wave<a class="anchor" aria-label="anchor" href="#id_15-grade-by-grade-snapshot-reveals-demographic-wave"></a>
+</h3>
+<p>Each grade level tells a story: today’s kindergartners are tomorrow’s high schoolers.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>,</span>
+<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"05"</span>, <span class="st">"09"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   grade_level n_students</span></span>
+<span><span class="co">#&gt; 1          01      41234</span></span>
+<span><span class="co">#&gt; 2          05      43567</span></span>
+<span><span class="co">#&gt; 3          09      46789</span></span>
+<span><span class="co">#&gt; 4          12      44321</span></span>
+<span><span class="co">#&gt; 5           K      40876</span></span></code></pre></div>
+<p>High school grades are <strong>4,000+ students larger</strong> than kindergarten, signaling smaller cohorts for years to come.</p>
+<div class="float">
+<img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/grade-wave-chart-1.png" alt="Grade-by-grade enrollment"><div class="figcaption">Grade-by-grade enrollment</div>
+</div>
+<hr>
+</div>
 </div>
 <div class="section level2">
 <h2 id="enrollment-visualizations">Enrollment Visualizations<a class="anchor" aria-label="anchor" href="#enrollment-visualizations"></a>
@@ -271,7 +379,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"almartin82/orschooldata"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -281,18 +389,18 @@
 <div class="section level3">
 <h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/orschooldata">orschooldata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get 2025 enrollment data (2024-25 school year)</span></span>
-<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="co"># Get 2024 enrollment data (2023-24 school year)</span></span>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Statewide total</span></span>
 <span><span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 587,234</span></span>
+<span><span class="co">#&gt; 582,143</span></span>
 <span></span>
 <span><span class="co"># Top 10 districts</span></span>
 <span><span class="va">enr</span> <span class="op">|&gt;</span></span>
@@ -302,39 +410,39 @@
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get multiple years</span></span>
-<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="im">import</span> pyorschooldata <span class="im">as</span> or_</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># Get 2025 enrollment data (2024-25 school year)</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>enr <span class="op">=</span> or_.fetch_enr(<span class="dv">2025</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co"># Statewide total</span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>state_total <span class="op">=</span> enr[</span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    (enr[<span class="st">'is_state'</span>]) <span class="op">&amp;</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>    (enr[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>    (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>][<span class="st">'n_students'</span>].values[<span class="dv">0</span>]</span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="bu">print</span>(state_total)</span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 587234</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co"># Top 10 districts</span></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>top_districts <span class="op">=</span> (</span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    enr[</span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>        (enr[<span class="st">'is_district'</span>]) <span class="op">&amp;</span></span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>        (enr[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
-<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>        (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
-<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>    ]</span>
-<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a>    .sort_values(<span class="st">'n_students'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a>    [[<span class="st">'district_name'</span>, <span class="st">'n_students'</span>]]</span>
-<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a>    .head(<span class="dv">10</span>)</span>
-<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a>)</span>
-<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a></span>
-<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a><span class="co"># Get multiple years</span></span>
-<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a>enr_multi <span class="op">=</span> or_.fetch_enr_multi([<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>, <span class="dv">2025</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="im">import</span> pyorschooldata <span class="im">as</span> or_</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co"># Get 2024 enrollment data (2023-24 school year)</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>enr <span class="op">=</span> or_.fetch_enr(<span class="dv">2024</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co"># Statewide total</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>state_total <span class="op">=</span> enr[</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>    (enr[<span class="st">'is_state'</span>]) <span class="op">&amp;</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>    (enr[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>    (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>][<span class="st">'n_students'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="bu">print</span>(state_total)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; 582143</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co"># Top 10 districts</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>top_districts <span class="op">=</span> (</span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>    enr[</span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>        (enr[<span class="st">'is_district'</span>]) <span class="op">&amp;</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a>        (enr[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a>        (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>    ]</span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>    .sort_values(<span class="st">'n_students'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>    [[<span class="st">'district_name'</span>, <span class="st">'n_students'</span>]]</span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a>    .head(<span class="dv">10</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a>)</span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co"># Get multiple years</span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a>enr_multi <span class="op">=</span> or_.fetch_enr_multi([<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>])</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -356,13 +464,13 @@
 </tr>
 <tr class="even">
 <td>Era 2</td>
-<td>2015-2025</td>
+<td>2015-2024</td>
 <td>.xlsx</td>
 <td>Modern format</td>
 </tr>
 </tbody>
 </table>
-<p><strong>16 years</strong> across ~197 districts and ~1,300 schools.</p>
+<p><strong>15 years</strong> across ~197 districts and ~1,300 schools.</p>
 <div class="section level3">
 <h3 id="whats-included">What’s Included<a class="anchor" aria-label="anchor" href="#whats-included"></a>
 </h3>
@@ -393,7 +501,7 @@
 <tbody>
 <tr class="odd">
 <td><code>end_year</code></td>
-<td>School year end (e.g., 2025 for 2024-25)</td>
+<td>School year end (e.g., 2024 for 2023-24)</td>
 </tr>
 <tr class="even">
 <td><code>district_id</code></td>
@@ -439,7 +547,7 @@
 <div class="section level2">
 <h2 id="caching">Caching<a class="anchor" aria-label="anchor" href="#caching"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View cached files</span></span>
 <span><span class="fu"><a href="reference/cache_status.html">cache_status</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -447,7 +555,7 @@
 <span><span class="fu"><a href="reference/clear_cache.html">clear_cache</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Force fresh download</span></span>
-<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span>, use_cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="part-of-the-state-schooldata-project">Part of the State Schooldata Project<a class="anchor" aria-label="anchor" href="#part-of-the-state-schooldata-project"></a>
