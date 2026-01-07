@@ -31,6 +31,12 @@ reference:
       - id_enr_aggs
       - enr_grade_aggs
 
+  - title: "School Directory"
+    desc: "Functions for school directory data"
+    contents:
+      - fetch_directory
+      - clear_directory_cache
+
   - title: "Caching"
     desc: "Functions for managing cached data"
     contents:
