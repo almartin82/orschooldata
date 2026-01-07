@@ -562,6 +562,15 @@ Functions for transforming and analyzing data
 - [`enr_grade_aggs()`](https://almartin82.github.io/orschooldata/reference/enr_grade_aggs.md)
   : Custom Enrollment Grade Level Aggregates
 
+## School Directory
+
+Functions for school directory data
+
+- [`fetch_directory()`](https://almartin82.github.io/orschooldata/reference/fetch_directory.md)
+  : Fetch Oregon school directory data
+- [`clear_directory_cache()`](https://almartin82.github.io/orschooldata/reference/clear_directory_cache.md)
+  : Clear school directory cache
+
 ## Caching
 
 Functions for managing cached data
