@@ -33,6 +33,11 @@ tidy_enr <- function(df) {
   # Grade-level columns
   grade_cols <- grep("^grade_", names(df), value = TRUE)
 
+  # Demographic columns (race/ethnicity)
+  demo_cols <- c("native_american", "asian", "pacific_islander",
+                 "black", "hispanic", "white", "multiracial")
+  demo_cols <- demo_cols[demo_cols %in% names(df)]
+
   # Extract total enrollment as a "subgroup"
   if ("row_total" %in% names(df)) {
     tidy_total <- df |>
@@ -79,7 +84,10 @@ tidy_enr <- function(df) {
           dplyr::select(dplyr::all_of(c(invariants, "n_students", "row_total"))) |>
           dplyr::mutate(
             subgroup = "total_enrollment",
-            pct = n_students / row_total,
+            pct = dplyr::case_when(
+              row_total > 0 ~ pmin(n_students / row_total, 1.0),
+              TRUE ~ 0.0
+            ),
             grade_level = gl
           ) |>
           dplyr::select(dplyr::all_of(c(invariants, "grade_level", "subgroup", "n_students", "pct")))
@@ -89,9 +97,42 @@ tidy_enr <- function(df) {
     tidy_grades <- NULL
   }
 
+  # Transform demographic enrollment to long format (TOTAL grade level only)
+  if (length(demo_cols) > 0 && "row_total" %in% names(df)) {
+    tidy_demographics <- purrr::map_df(
+      demo_cols,
+      function(.x) {
+        df |>
+          dplyr::rename(n_students = dplyr::all_of(.x)) |>
+          dplyr::select(dplyr::all_of(c(invariants, "n_students", "row_total"))) |>
+          dplyr::mutate(
+            subgroup = .x,
+            pct = dplyr::case_when(
+              row_total > 0 ~ pmin(n_students / row_total, 1.0),
+              TRUE ~ 0.0
+            ),
+            grade_level = "TOTAL"
+          ) |>
+          dplyr::select(dplyr::all_of(c(invariants, "grade_level", "subgroup", "n_students", "pct")))
+      }
+    )
+  } else {
+    tidy_demographics <- NULL
+  }
+
   # Combine all tidy data
-  dplyr::bind_rows(tidy_total, tidy_grades) |>
+  result <- dplyr::bind_rows(tidy_total, tidy_grades, tidy_demographics) |>
     dplyr::filter(!is.na(n_students))
+
+  # Add aggregation_flag column
+  result <- result %>%
+    dplyr::mutate(aggregation_flag = dplyr::case_when(
+      !is.na(district_id) & !is.na(campus_id) & district_id != "" & campus_id != "" ~ "campus",
+      !is.na(district_id) & district_id != "" ~ "district",
+      TRUE ~ "state"
+    ))
+
+  result
 }
 
 
