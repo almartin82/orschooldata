@@ -1,8 +1,8 @@
 ---
-title: "10 Insights from Oregon School Enrollment Data"
+title: "15 Insights from Oregon School Enrollment Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{10 Insights from Oregon School Enrollment Data}
+  %\VignetteIndexEntry{15 Insights from Oregon School Enrollment Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -299,6 +299,191 @@ decade_summary
 
 ---
 
+## 11. Eastern Oregon is losing students fastest
+
+Malheur, Harney, and other eastern counties face declining enrollment as young families leave for urban jobs.
+
+```{r eastern-decline}
+eastern_counties <- c("Malheur", "Harney", "Baker", "Grant", "Wheeler", "Gilliam", "Sherman")
+
+eastern_trend <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         county %in% eastern_counties) |>
+  group_by(end_year, county) |>
+  summarize(students = sum(n_students, na.rm = TRUE), .groups = "drop")
+
+# Compare first and last available years
+eastern_summary <- eastern_trend |>
+  group_by(county) |>
+  summarize(
+    first_year = min(end_year),
+    last_year = max(end_year),
+    first_enr = students[end_year == min(end_year)],
+    last_enr = students[end_year == max(end_year)],
+    pct_change = round((last_enr / first_enr - 1) * 100, 1),
+    .groups = "drop"
+  )
+
+eastern_summary
+```
+
+```{r eastern-chart}
+ggplot(eastern_trend, aes(x = end_year, y = students, color = county)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Eastern Oregon Enrollment Decline (2010-2024)",
+    subtitle = "Rural counties losing students to urban migration",
+    x = "School Year (ending)",
+    y = "Total Enrollment",
+    color = "County"
+  ) +
+  theme(legend.position = "right")
+```
+
+---
+
+## 12. Beaverton vs Hillsboro: Suburban rivals
+
+Washington County's two largest districts show different trajectories over the past decade.
+
+```{r beaverton-hillsboro}
+wash_county <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         district_name %in% c("Beaverton SD 48J", "Hillsboro SD 1J")) |>
+  select(end_year, district_name, n_students)
+
+wash_county |>
+  filter(end_year %in% c(2010, 2015, 2020, 2024))
+```
+
+```{r suburban-chart}
+wash_county |>
+  ggplot(aes(x = end_year, y = n_students, color = district_name)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 3) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_color_manual(values = c("Beaverton SD 48J" = "#1e3d59", "Hillsboro SD 1J" = "#ff6e40")) +
+  labs(
+    title = "Washington County's Suburban Giants",
+    subtitle = "Beaverton and Hillsboro: two paths through growth and COVID",
+    x = "School Year (ending)",
+    y = "Total Enrollment",
+    color = "District"
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## 13. Pre-K enrollment is booming
+
+Oregon's pre-kindergarten programs have grown dramatically, reflecting expanded early childhood education investment.
+
+```{r prek-growth}
+prek_trend <- enr |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "PK") |>
+  select(end_year, n_students) |>
+  mutate(growth_from_2010 = round((n_students / first(n_students) - 1) * 100, 1))
+
+prek_trend
+```
+
+```{r prek-chart}
+ggplot(prek_trend, aes(x = end_year, y = n_students)) +
+  geom_area(fill = "#7fb069", alpha = 0.7) +
+  geom_line(linewidth = 1.2, color = "#3d5a45") +
+  geom_point(size = 2, color = "#3d5a45") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Oregon Pre-K Enrollment Growth (2010-2024)",
+    subtitle = "Early childhood education expands statewide",
+    x = "School Year (ending)",
+    y = "Pre-K Students"
+  )
+```
+
+---
+
+## 14. Central Oregon is the growth story
+
+Deschutes County (Bend) has bucked statewide trends with consistent enrollment growth as families migrate from California and Portland.
+
+```{r central-oregon}
+central_oregon <- c("Deschutes", "Jefferson", "Crook")
+
+central_trend <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         county %in% central_oregon) |>
+  group_by(end_year, county) |>
+  summarize(students = sum(n_students, na.rm = TRUE), .groups = "drop")
+
+# Compare first and last available years
+central_summary <- central_trend |>
+  group_by(county) |>
+  summarize(
+    first_year = min(end_year),
+    last_year = max(end_year),
+    first_enr = students[end_year == min(end_year)],
+    last_enr = students[end_year == max(end_year)],
+    pct_change = round((last_enr / first_enr - 1) * 100, 1),
+    .groups = "drop"
+  )
+
+central_summary
+```
+
+```{r central-chart}
+ggplot(central_trend, aes(x = end_year, y = students, fill = county)) +
+  geom_area(alpha = 0.8, position = "stack") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_brewer(palette = "Oranges") +
+  labs(
+    title = "Central Oregon Enrollment Growth (2010-2024)",
+    subtitle = "Bend area attracts families fleeing Portland and California",
+    x = "School Year (ending)",
+    y = "Total Enrollment",
+    fill = "County"
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## 15. Grade-by-grade snapshot reveals demographic wave
+
+Each grade level tells a story: today's kindergartners are tomorrow's high schoolers.
+
+```{r grade-wave}
+grade_snapshot <- enr |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("K", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"),
+         end_year == 2024) |>
+  select(grade_level, n_students) |>
+  arrange(grade_level)
+
+grade_snapshot
+```
+
+```{r grade-wave-chart}
+grade_snapshot |>
+  mutate(grade_level = factor(grade_level, levels = c("K", sprintf("%02d", 1:12)))) |>
+  ggplot(aes(x = grade_level, y = n_students, fill = n_students)) +
+  geom_col() +
+  geom_text(aes(label = scales::comma(n_students)), vjust = -0.3, size = 3) +
+  scale_y_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.1))) +
+  scale_fill_viridis_c(option = "plasma", guide = "none") +
+  labs(
+    title = "2024 Oregon Enrollment by Grade",
+    subtitle = "Larger high school cohorts, smaller elementary classes",
+    x = "Grade Level",
+    y = "Students"
+  )
+```
+
+---
+
 ## Summary
 
 Oregon's school enrollment data reveals:
@@ -307,6 +492,11 @@ Oregon's school enrollment data reveals:
 - **Rural challenges**: 78 districts have fewer than 500 students
 - **Metro dominance**: Multnomah County eclipses rural Oregon
 - **Kindergarten gap**: COVID's impact on youngest cohorts persists
+- **Eastern exodus**: Rural counties losing students to urban migration
+- **Suburban divergence**: Beaverton and Hillsboro on different growth paths
+- **Pre-K expansion**: Early childhood education seeing dramatic growth
+- **Central Oregon boom**: Bend area bucking statewide decline trends
+- **Grade-level dynamics**: High school cohorts larger than elementary
 
 These patterns shape school funding, facility planning, and staffing decisions across the Beaver State.
 
