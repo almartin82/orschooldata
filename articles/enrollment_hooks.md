@@ -20,7 +20,7 @@ The state added students for a decade, then lost 26,000 in a single year
 during the pandemic.
 
 ``` r
-enr <- fetch_enr_multi(2010:2024)
+enr <- fetch_enr_multi(2010:2024, use_cache = TRUE)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -165,7 +165,7 @@ Grade 9 enrollment exceeds kindergarten by several thousand students,
 reflecting the pandemic’s lasting impact on younger cohorts.
 
 ``` r
-enr_2024 <- fetch_enr(2024)
+enr_2024 <- fetch_enr(2024, use_cache = TRUE)
 
 grade_comparison <- enr_2024 |>
   filter(is_state, subgroup == "total_enrollment",
