@@ -17,6 +17,3 @@ Thumbs.db
 
 # IDE files
 *.Rproj
-
-# Cache directories
-inst/cache/
