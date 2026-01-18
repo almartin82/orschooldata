@@ -43,7 +43,7 @@ get_available_years()
 
 ```{r fetch-single}
 # Get 2024 enrollment data (2023-24 school year)
-enr_2024 <- fetch_enr(2024)
+enr_2024 <- fetch_enr(2024, use_cache = TRUE)
 
 # View structure
 glimpse(enr_2024)
@@ -88,7 +88,7 @@ districts
 For analysis that needs grade columns side-by-side, use `tidy = FALSE`:
 
 ```{r wide-format}
-enr_wide <- fetch_enr(2024, tidy = FALSE)
+enr_wide <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
 names(enr_wide)
 ```
 
@@ -98,7 +98,7 @@ names(enr_wide)
 
 ```{r fetch-multi}
 # Get 5 years of data
-enr_multi <- fetch_enr_multi(2020:2024)
+enr_multi <- fetch_enr_multi(2020:2024, use_cache = TRUE)
 
 # State totals over time
 state_trend <- enr_multi |>
@@ -162,7 +162,8 @@ clear_cache()
 
 ```{r largest-schools}
 # Find schools in Portland (district_id = 1920)
-portland_schools <- enr_2024 |>
+portland_schools <- # Use the cached data from earlier
+enr_2024 |>
   filter(is_campus, district_id == "1920", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
   select(campus_name, n_students) |>
@@ -184,7 +185,7 @@ enr_2024 |>
 
 ```{r district-trend}
 # Salem-Keizer (district_id = 2178) over 5 years
-fetch_enr_multi(2020:2024) |>
+fetch_enr_multi(2020:2024, use_cache = TRUE) |>
   filter(is_district, district_id == "2178", grade_level == "TOTAL") |>
   select(end_year, district_name, n_students)
 ```
@@ -201,3 +202,9 @@ fetch_enr_multi(2020:2024) |>
 - See `vignette("enrollment_hooks")` for 10 insights from Oregon enrollment data
 - Explore the raw data with `get_raw_enr(year)` to see original ODE columns
 - Check `?fetch_enr` for full documentation
+
+## Session Info
+
+```{r session-info}
+sessionInfo()
+```

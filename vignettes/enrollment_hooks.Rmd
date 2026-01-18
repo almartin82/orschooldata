@@ -504,3 +504,9 @@ These patterns shape school funding, facility planning, and staffing decisions a
 ---
 
 *Data sourced from the Oregon Department of Education [Fall Membership Reports](https://www.oregon.gov/ode/reports-and-data/students/Pages/Fall-Membership-Report.aspx).*
+
+## Session Info
+
+```{r session-info}
+sessionInfo()
+```
