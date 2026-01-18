@@ -201,3 +201,9 @@ fetch_enr_multi(2020:2024) |>
 - See `vignette("enrollment_hooks")` for 10 insights from Oregon enrollment data
 - Explore the raw data with `get_raw_enr(year)` to see original ODE columns
 - Check `?fetch_enr` for full documentation
+
+---
+
+```{r session-info}
+sessionInfo()
+```

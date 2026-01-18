@@ -11,4 +11,9 @@
 ^Meta$
 ^CLAUDE\.md$
 ^PRD\.md$
+^EXPANSION\.md$
+^TODO\.md$
+^HEALTH_CHECK_REPORT\.md$
+^audit-tidy-format\.md$
+^generate_readme_figs\.R$
 ^py.*schooldata$
