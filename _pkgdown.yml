@@ -43,6 +43,13 @@ reference:
       - cache_status
       - clear_cache
 
+articles:
+  - title: "Vignettes"
+    navbar: ~
+    contents:
+      - getting_started
+      - enrollment_hooks
+
 home:
   links:
     - text: Oregon Department of Education
