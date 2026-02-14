@@ -36,6 +36,22 @@ state_totals <- enr |>
          pct_change = round(change / lag(n_students) * 100, 2))
 
 state_totals
+#>    end_year n_students change pct_change
+#> 1      2010     561696     NA         NA
+#> 2      2011     561696      0       0.00
+#> 3      2012     561328   -368      -0.07
+#> 4      2013     560946   -382      -0.07
+#> 5      2014     562262   1316       0.23
+#> 6      2015     570857   8595       1.53
+#> 7      2016     576407   5550       0.97
+#> 8      2017     578947   2540       0.44
+#> 9      2018     580684   1737       0.30
+#> 10     2019     581730   1046       0.18
+#> 11     2020     582661    931       0.16
+#> 12     2021     560917 -21744      -3.73
+#> 13     2022     553012  -7905      -1.41
+#> 14     2023     552380   -632      -0.11
+#> 15     2024     547424  -4956      -0.90
 ```
 
 ![Oregon statewide enrollment trends](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png)
@@ -54,6 +70,8 @@ portland <- enr |>
   mutate(pct_of_peak = round(n_students / max(n_students) * 100, 1))
 
 portland
+#> [1] end_year      district_name n_students    pct_of_peak
+#> <0 rows> (or 0-length row.names)
 ```
 
 ![Top Oregon districts](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png)
@@ -73,6 +91,15 @@ covid_grades <- enr |>
   tidyr::pivot_wider(names_from = grade_level, values_from = n_students)
 
 covid_grades
+#> # A tibble: 6 x 5
+#>   end_year     K  `01`  `06`  `09`
+#>      <int> <dbl> <dbl> <dbl> <dbl>
+#> 1     2019 42004 42941 46655 45383
+#> 2     2020 42322 42987 47024 45430
+#> 3     2021 36151 40342 44012 46115
+#> 4     2022 37816 38583 42274 46429
+#> 5     2023 37026 40181 41907 46727
+#> 6     2024 35644 38406 41670 44871
 ```
 
 ![Oregon kindergarten enrollment](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png)
@@ -93,6 +120,15 @@ grade_comparison <- enr_2024 |>
   arrange(grade_level)
 
 grade_comparison
+#>   grade_level n_students
+#> 1          01      38406
+#> 2          02      40577
+#> 3          03      40026
+#> 4          09      44871
+#> 5          10      46733
+#> 6          11      45424
+#> 7          12      46162
+#> 8           K      35644
 ```
 
 ---
@@ -113,6 +149,11 @@ district_sizes <- enr_2024 |>
   count(size_bucket)
 
 district_sizes
+#>         size_bucket  n
+#> 1    Large (2K-10K) 55
+#> 2   Medium (500-2K) 59
+#> 3      Small (<500) 86
+#> 4 Very Large (10K+) 10
 ```
 
 ![Oregon districts by size](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/regional-chart-1.png)
@@ -134,6 +175,10 @@ county_enrollment <- enr_2024 |>
   arrange(desc(students))
 
 head(county_enrollment, 10)
+#> # A tibble: 1 x 3
+#>   county districts students
+#>   <chr>      <int>    <dbl>
+#> 1 NA           210   547424
 ```
 
 ![Oregon's top counties by enrollment](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/growth-chart-1.png)
@@ -153,6 +198,8 @@ lane_districts <- enr_2024 |>
   head(5)
 
 lane_districts
+#> [1] district_name n_students
+#> <0 rows> (or 0-length row.names)
 ```
 
 ---
@@ -169,6 +216,17 @@ largest <- enr_2024 |>
   head(10)
 
 largest
+#>                      district_name n_students
+#> 1                   Portland SD 1J      43979
+#> 2              Salem-Keizer SD 24J      38787
+#> 3                 Beaverton SD 48J      37988
+#> 4                  Hillsboro SD 1J      18716
+#> 5  Bend-LaPine Administrative SD 1      17075
+#> 6            North Clackamas SD 12      16874
+#> 7                     Eugene SD 4J      16318
+#> 8                  Medford SD 549C      13750
+#> 9           Tigard-Tualatin SD 23J      11620
+#> 10           Gresham-Barlow SD 10J      11371
 ```
 
 ---
@@ -183,6 +241,8 @@ ungraded <- enr |>
   select(end_year, n_students)
 
 ungraded
+#> [1] end_year   n_students
+#> <0 rows> (or 0-length row.names)
 ```
 
 ---
@@ -205,6 +265,12 @@ decade_summary <- enr |>
   ))
 
 decade_summary
+#>   end_year n_students          label
+#> 1     2010     561696 Post-recession
+#> 2     2015     570857     Mid-decade
+#> 3     2019     581730 Pre-COVID peak
+#> 4     2021     560917      COVID low
+#> 5     2024     547424        Current
 ```
 
 ---
@@ -235,6 +301,9 @@ eastern_summary <- eastern_trend |>
   )
 
 eastern_summary
+#> # A tibble: 0 x 6
+#> # i 6 variables: county <chr>, first_year <dbl>, last_year <dbl>,
+#> #   first_enr <dbl>, last_enr <dbl>, pct_change <dbl>
 ```
 
 ![Eastern Oregon enrollment decline](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/eastern-chart-1.png)
@@ -253,6 +322,15 @@ wash_county <- enr |>
 
 wash_county |>
   filter(end_year %in% c(2010, 2015, 2020, 2024))
+#>   end_year    district_name n_students
+#> 1     2010  Hillsboro SD 1J      20714
+#> 2     2010 Beaverton SD 48J      37950
+#> 3     2015  Hillsboro SD 1J      20884
+#> 4     2015 Beaverton SD 48J      39763
+#> 5     2020  Hillsboro SD 1J      20269
+#> 6     2020 Beaverton SD 48J      41215
+#> 7     2024  Hillsboro SD 1J      18716
+#> 8     2024 Beaverton SD 48J      37988
 ```
 
 ![Washington County suburban districts](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/suburban-chart-1.png)
@@ -270,6 +348,8 @@ prek_trend <- enr |>
   mutate(growth_from_2010 = round((n_students / first(n_students) - 1) * 100, 1))
 
 prek_trend
+#> [1] end_year         n_students       growth_from_2010
+#> <0 rows> (or 0-length row.names)
 ```
 
 ![Pre-K enrollment growth](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/prek-chart-1.png)
@@ -302,6 +382,9 @@ central_summary <- central_trend |>
   )
 
 central_summary
+#> # A tibble: 0 x 6
+#> # i 6 variables: county <chr>, first_year <dbl>, last_year <dbl>,
+#> #   first_enr <dbl>, last_enr <dbl>, pct_change <dbl>
 ```
 
 ![Central Oregon growth](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/central-chart-1.png)
@@ -321,6 +404,20 @@ grade_snapshot <- enr |>
   arrange(grade_level)
 
 grade_snapshot
+#>    grade_level n_students
+#> 1           01      38406
+#> 2           02      40577
+#> 3           03      40026
+#> 4           04      41618
+#> 5           05      41454
+#> 6           06      41670
+#> 7           07      42008
+#> 8           08      42831
+#> 9           09      44871
+#> 10          10      46733
+#> 11          11      45424
+#> 12          12      46162
+#> 13           K      35644
 ```
 
 ![Grade-by-grade enrollment](https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/grade-wave-chart-1.png)
