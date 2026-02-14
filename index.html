@@ -81,7 +81,23 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">n_students</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>,</span>
 <span>         pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">state_totals</span></span></code></pre></div>
+<span><span class="va">state_totals</span></span>
+<span><span class="co">#&gt;    end_year n_students change pct_change</span></span>
+<span><span class="co">#&gt; 1      2010     561696     NA         NA</span></span>
+<span><span class="co">#&gt; 2      2011     561696      0       0.00</span></span>
+<span><span class="co">#&gt; 3      2012     561328   -368      -0.07</span></span>
+<span><span class="co">#&gt; 4      2013     560946   -382      -0.07</span></span>
+<span><span class="co">#&gt; 5      2014     562262   1316       0.23</span></span>
+<span><span class="co">#&gt; 6      2015     570857   8595       1.53</span></span>
+<span><span class="co">#&gt; 7      2016     576407   5550       0.97</span></span>
+<span><span class="co">#&gt; 8      2017     578947   2540       0.44</span></span>
+<span><span class="co">#&gt; 9      2018     580684   1737       0.30</span></span>
+<span><span class="co">#&gt; 10     2019     581730   1046       0.18</span></span>
+<span><span class="co">#&gt; 11     2020     582661    931       0.16</span></span>
+<span><span class="co">#&gt; 12     2021     560917 -21744      -3.73</span></span>
+<span><span class="co">#&gt; 13     2022     553012  -7905      -1.41</span></span>
+<span><span class="co">#&gt; 14     2023     552380   -632      -0.11</span></span>
+<span><span class="co">#&gt; 15     2024     547424  -4956      -0.90</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png" alt="Oregon statewide enrollment trends"><div class="figcaption">Oregon statewide enrollment trends</div>
 </div>
@@ -98,7 +114,9 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_of_peak <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">n_students</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">portland</span></span></code></pre></div>
+<span><span class="va">portland</span></span>
+<span><span class="co">#&gt; [1] end_year      district_name n_students    pct_of_peak</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png" alt="Top Oregon districts"><div class="figcaption">Top Oregon districts</div>
 </div>
@@ -116,7 +134,16 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">covid_grades</span></span></code></pre></div>
+<span><span class="va">covid_grades</span></span>
+<span><span class="co">#&gt; # A tibble: 6 x 5</span></span>
+<span><span class="co">#&gt;   end_year     K  `01`  `06`  `09`</span></span>
+<span><span class="co">#&gt;      &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     2019 42004 42941 46655 45383</span></span>
+<span><span class="co">#&gt; 2     2020 42322 42987 47024 45430</span></span>
+<span><span class="co">#&gt; 3     2021 36151 40342 44012 46115</span></span>
+<span><span class="co">#&gt; 4     2022 37816 38583 42274 46429</span></span>
+<span><span class="co">#&gt; 5     2023 37026 40181 41907 46727</span></span>
+<span><span class="co">#&gt; 6     2024 35644 38406 41670 44871</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png" alt="Oregon kindergarten enrollment"><div class="figcaption">Oregon kindergarten enrollment</div>
 </div>
@@ -135,7 +162,16 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">grade_level</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">grade_comparison</span></span></code></pre></div>
+<span><span class="va">grade_comparison</span></span>
+<span><span class="co">#&gt;   grade_level n_students</span></span>
+<span><span class="co">#&gt; 1          01      38406</span></span>
+<span><span class="co">#&gt; 2          02      40577</span></span>
+<span><span class="co">#&gt; 3          03      40026</span></span>
+<span><span class="co">#&gt; 4          09      44871</span></span>
+<span><span class="co">#&gt; 5          10      46733</span></span>
+<span><span class="co">#&gt; 6          11      45424</span></span>
+<span><span class="co">#&gt; 7          12      46162</span></span>
+<span><span class="co">#&gt; 8           K      35644</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -153,7 +189,12 @@
 <span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">size_bucket</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">district_sizes</span></span></code></pre></div>
+<span><span class="va">district_sizes</span></span>
+<span><span class="co">#&gt;         size_bucket  n</span></span>
+<span><span class="co">#&gt; 1    Large (2K-10K) 55</span></span>
+<span><span class="co">#&gt; 2   Medium (500-2K) 59</span></span>
+<span><span class="co">#&gt; 3      Small (&lt;500) 86</span></span>
+<span><span class="co">#&gt; 4 Very Large (10K+) 10</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/regional-chart-1.png" alt="Oregon districts by size"><div class="figcaption">Oregon districts by size</div>
 </div>
@@ -173,7 +214,11 @@
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">county_enrollment</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">county_enrollment</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 3</span></span>
+<span><span class="co">#&gt;   county districts students</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;int&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 NA           210   547424</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/growth-chart-1.png" alt="Oregon’s top counties by enrollment"><div class="figcaption">Oregon’s top counties by enrollment</div>
 </div>
@@ -191,7 +236,9 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lane_districts</span></span></code></pre></div>
+<span><span class="va">lane_districts</span></span>
+<span><span class="co">#&gt; [1] district_name n_students</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -205,7 +252,18 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">largest</span></span></code></pre></div>
+<span><span class="va">largest</span></span>
+<span><span class="co">#&gt;                      district_name n_students</span></span>
+<span><span class="co">#&gt; 1                   Portland SD 1J      43979</span></span>
+<span><span class="co">#&gt; 2              Salem-Keizer SD 24J      38787</span></span>
+<span><span class="co">#&gt; 3                 Beaverton SD 48J      37988</span></span>
+<span><span class="co">#&gt; 4                  Hillsboro SD 1J      18716</span></span>
+<span><span class="co">#&gt; 5  Bend-LaPine Administrative SD 1      17075</span></span>
+<span><span class="co">#&gt; 6            North Clackamas SD 12      16874</span></span>
+<span><span class="co">#&gt; 7                     Eugene SD 4J      16318</span></span>
+<span><span class="co">#&gt; 8                  Medford SD 549C      13750</span></span>
+<span><span class="co">#&gt; 9           Tigard-Tualatin SD 23J      11620</span></span>
+<span><span class="co">#&gt; 10           Gresham-Barlow SD 10J      11371</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -217,7 +275,9 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"UG"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ungraded</span></span></code></pre></div>
+<span><span class="va">ungraded</span></span>
+<span><span class="co">#&gt; [1] end_year   n_students</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -237,7 +297,13 @@
 <span>    <span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span> <span class="op">~</span> <span class="st">"Current"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">decade_summary</span></span></code></pre></div>
+<span><span class="va">decade_summary</span></span>
+<span><span class="co">#&gt;   end_year n_students          label</span></span>
+<span><span class="co">#&gt; 1     2010     561696 Post-recession</span></span>
+<span><span class="co">#&gt; 2     2015     570857     Mid-decade</span></span>
+<span><span class="co">#&gt; 3     2019     581730 Pre-COVID peak</span></span>
+<span><span class="co">#&gt; 4     2021     560917      COVID low</span></span>
+<span><span class="co">#&gt; 5     2024     547424        Current</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -265,7 +331,10 @@
 <span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">eastern_summary</span></span></code></pre></div>
+<span><span class="va">eastern_summary</span></span>
+<span><span class="co">#&gt; # A tibble: 0 x 6</span></span>
+<span><span class="co">#&gt; # i 6 variables: county &lt;chr&gt;, first_year &lt;dbl&gt;, last_year &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   first_enr &lt;dbl&gt;, last_enr &lt;dbl&gt;, pct_change &lt;dbl&gt;</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/eastern-chart-1.png" alt="Eastern Oregon enrollment decline"><div class="figcaption">Eastern Oregon enrollment decline</div>
 </div>
@@ -282,7 +351,16 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">wash_county</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2015</span>, <span class="fl">2020</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2015</span>, <span class="fl">2020</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year    district_name n_students</span></span>
+<span><span class="co">#&gt; 1     2010  Hillsboro SD 1J      20714</span></span>
+<span><span class="co">#&gt; 2     2010 Beaverton SD 48J      37950</span></span>
+<span><span class="co">#&gt; 3     2015  Hillsboro SD 1J      20884</span></span>
+<span><span class="co">#&gt; 4     2015 Beaverton SD 48J      39763</span></span>
+<span><span class="co">#&gt; 5     2020  Hillsboro SD 1J      20269</span></span>
+<span><span class="co">#&gt; 6     2020 Beaverton SD 48J      41215</span></span>
+<span><span class="co">#&gt; 7     2024  Hillsboro SD 1J      18716</span></span>
+<span><span class="co">#&gt; 8     2024 Beaverton SD 48J      37988</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/suburban-chart-1.png" alt="Washington County suburban districts"><div class="figcaption">Washington County suburban districts</div>
 </div>
@@ -298,7 +376,9 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>growth_from_2010 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">n_students</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">prek_trend</span></span></code></pre></div>
+<span><span class="va">prek_trend</span></span>
+<span><span class="co">#&gt; [1] end_year         n_students       growth_from_2010</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/prek-chart-1.png" alt="Pre-K enrollment growth"><div class="figcaption">Pre-K enrollment growth</div>
 </div>
@@ -329,7 +409,10 @@
 <span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">central_summary</span></span></code></pre></div>
+<span><span class="va">central_summary</span></span>
+<span><span class="co">#&gt; # A tibble: 0 x 6</span></span>
+<span><span class="co">#&gt; # i 6 variables: county &lt;chr&gt;, first_year &lt;dbl&gt;, last_year &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   first_enr &lt;dbl&gt;, last_enr &lt;dbl&gt;, pct_change &lt;dbl&gt;</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/central-chart-1.png" alt="Central Oregon growth"><div class="figcaption">Central Oregon growth</div>
 </div>
@@ -347,7 +430,21 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">grade_level</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">grade_snapshot</span></span></code></pre></div>
+<span><span class="va">grade_snapshot</span></span>
+<span><span class="co">#&gt;    grade_level n_students</span></span>
+<span><span class="co">#&gt; 1           01      38406</span></span>
+<span><span class="co">#&gt; 2           02      40577</span></span>
+<span><span class="co">#&gt; 3           03      40026</span></span>
+<span><span class="co">#&gt; 4           04      41618</span></span>
+<span><span class="co">#&gt; 5           05      41454</span></span>
+<span><span class="co">#&gt; 6           06      41670</span></span>
+<span><span class="co">#&gt; 7           07      42008</span></span>
+<span><span class="co">#&gt; 8           08      42831</span></span>
+<span><span class="co">#&gt; 9           09      44871</span></span>
+<span><span class="co">#&gt; 10          10      46733</span></span>
+<span><span class="co">#&gt; 11          11      45424</span></span>
+<span><span class="co">#&gt; 12          12      46162</span></span>
+<span><span class="co">#&gt; 13           K      35644</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/orschooldata/articles/enrollment_hooks_files/figure-html/grade-wave-chart-1.png" alt="Grade-by-grade enrollment"><div class="figcaption">Grade-by-grade enrollment</div>
 </div>
